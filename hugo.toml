@@ -1,0 +1,4 @@
+baseURL = 'https://chris-smith.com/'
+languageCode = 'en-us'
+title = 'Chris Smith'
+theme = 'triple-hyde'
