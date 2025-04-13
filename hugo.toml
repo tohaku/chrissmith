@@ -1,6 +1,6 @@
 baseURL = 'https://chris-smith.com/'
 languageCode = 'en-us'
-title = 'Chris'
+title = ''
 theme = 'triple-hyde'
 
 [params]
@@ -32,6 +32,7 @@ theme = 'triple-hyde'
 
 [params.social]
     instagram = "chris.tohaku/"
+    tryhackme = "tohaku"
     #github = "<username>"
     #linkedin = "<username>"
     #twitter = "<username>"
