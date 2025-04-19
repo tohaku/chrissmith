@@ -1,0 +1,206 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Adventure Land All Functions Guide</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; vertical-align: top; }
+        th { background-color: #f2f2f2; }
+        h1 { text-align: center; }
+    </style>
+</head>
+<body>
+    <h1>Adventure Land All Functions Guide</h1>
+    <table>
+        <tr>
+            <th>Function</th>
+            <th>Description</th>
+            <th>Example</th>
+        </tr>
+
+        <tr>
+            <td>smart_move(destination)</td>
+            <td>Automatically navigates the character to a specific location or NPC.</td>
+            <td>smart_move({to: &quot;main&quot;}); // Moves to the main town</td>
+        </tr>
+    
+        <tr>
+            <td>get_player(name)</td>
+            <td>Returns the player object with the specified name if they are visible.</td>
+            <td>let player = get_player(&quot;Taro&quot;);</td>
+        </tr>
+    
+        <tr>
+            <td>get_npc(name)</td>
+            <td>Returns the NPC object by name if it&#x27;s nearby.</td>
+            <td>let npc = get_npc(&quot;fisherman&quot;);</td>
+        </tr>
+    
+        <tr>
+            <td>find_npc(name)</td>
+            <td>Returns the coordinates of the specified NPC, used with smart_move.</td>
+            <td>smart_move(find_npc(&quot;fisherman&quot;));</td>
+        </tr>
+    
+        <tr>
+            <td>accept_quest(name)</td>
+            <td>Accepts a quest from an NPC if it&#x27;s available.</td>
+            <td>accept_quest(&quot;cave_snakes&quot;);</td>
+        </tr>
+    
+        <tr>
+            <td>complete_quest(name)</td>
+            <td>Completes a quest if the objectives have been fulfilled.</td>
+            <td>complete_quest(&quot;cave_snakes&quot;);</td>
+        </tr>
+    
+        <tr>
+            <td>start_character(name, script)</td>
+            <td>Starts a character with a specific script file.</td>
+            <td>start_character(&quot;Taro&quot;, &quot;warrior_script&quot;);</td>
+        </tr>
+    
+        <tr>
+            <td>load_code(file)</td>
+            <td>Loads a specific JavaScript file into the current character&#x27;s runtime.</td>
+            <td>load_code(&quot;combat_utils&quot;);</td>
+        </tr>
+    
+        <tr>
+            <td>send_cm(target, data)</td>
+            <td>Sends code message (cm) data to another character.</td>
+            <td>send_cm(&quot;Healer&quot;, {type: &quot;heal_me&quot;});</td>
+        </tr>
+    
+        <tr>
+            <td>on_cm(name, data)</td>
+            <td>Handles incoming code messages from other characters.</td>
+            <td>on_cm = function(name, data) { if(data.type === &quot;heal_me&quot;) use_skill(&quot;heal&quot;, get_player(name)); };</td>
+        </tr>
+    
+        <tr>
+            <td>use_skill(skill, target)</td>
+            <td>Uses a skill optionally targeting an enemy or ally.</td>
+            <td>use_skill(&quot;attack&quot;, get_target());</td>
+        </tr>
+    
+        <tr>
+            <td>get_targeted_monster()</td>
+            <td>Returns the monster your character is currently targeting.</td>
+            <td>let mob = get_targeted_monster();</td>
+        </tr>
+    
+        <tr>
+            <td>change_target(target)</td>
+            <td>Changes the currently targeted monster or player.</td>
+            <td>change_target(get_nearest_monster());</td>
+        </tr>
+    
+        <tr>
+            <td>get_nearest_monster(args)</td>
+            <td>Finds the nearest monster based on filter parameters.</td>
+            <td>let mob = get_nearest_monster({min_xp: 100, max_att: 120});</td>
+        </tr>
+    
+        <tr>
+            <td>is_on_cooldown(skill)</td>
+            <td>Checks if a skill is currently on cooldown.</td>
+            <td>if (!is_on_cooldown(&quot;attack&quot;)) use_skill(&quot;attack&quot;);</td>
+        </tr>
+    
+        <tr>
+            <td>can_use(skill)</td>
+            <td>Returns true if the skill is usable (off cooldown, has mana, etc).</td>
+            <td>if (can_use(&quot;burst&quot;)) use_skill(&quot;burst&quot;);</td>
+        </tr>
+    
+        <tr>
+            <td>loot()</td>
+            <td>Automatically picks up nearby items.</td>
+            <td>setInterval(loot, 1000);</td>
+        </tr>
+    
+        <tr>
+            <td>attack(target)</td>
+            <td>Attacks the specified monster or player.</td>
+            <td>let target = get_nearest_monster(); if (target) attack(target);</td>
+        </tr>
+    
+        <tr>
+            <td>get_monsters()</td>
+            <td>Returns a list of all visible monsters.</td>
+            <td>let mobs = get_monsters(); mobs.forEach(m =&gt; log(m.name));</td>
+        </tr>
+    
+        <tr>
+            <td>parent.socket.emit(event, data)</td>
+            <td>Sends a raw socket message to the server. Used for advanced interactions.</td>
+            <td>parent.socket.emit(&quot;skill&quot;, {name: &quot;attack&quot;, id: target.id});</td>
+        </tr>
+    
+        <tr>
+            <td>buy(name, amount)</td>
+            <td>Buys an item from the shop you&#x27;re interacting with.</td>
+            <td>buy(&quot;hpot0&quot;, 10);</td>
+        </tr>
+    
+        <tr>
+            <td>sell(slot, amount)</td>
+            <td>Sells the item in your inventory at the given slot.</td>
+            <td>sell(0, 1);</td>
+        </tr>
+    
+        <tr>
+            <td>use(item_slot)</td>
+            <td>Uses a consumable item in the specified inventory slot.</td>
+            <td>use(2); // Uses the item in slot 2</td>
+        </tr>
+    
+        <tr>
+            <td>equip(item_slot)</td>
+            <td>Equips the item in the specified inventory slot.</td>
+            <td>equip(1); // Equips the item in slot 1</td>
+        </tr>
+    
+        <tr>
+            <td>unequip(slot_name)</td>
+            <td>Unequips an item from the specified gear slot.</td>
+            <td>unequip(&quot;ring1&quot;);</td>
+        </tr>
+    
+        <tr>
+            <td>game_log(message, color)</td>
+            <td>Logs a colored message in the game log.</td>
+            <td>game_log(&quot;Starting hunt!&quot;, &quot;#00FF00&quot;);</td>
+        </tr>
+    
+        <tr>
+            <td>clear_log()</td>
+            <td>Clears the game log.</td>
+            <td>clear_log();</td>
+        </tr>
+    
+        <tr>
+            <td>respawn()</td>
+            <td>Respawns your character after dying.</td>
+            <td>respawn();</td>
+        </tr>
+    
+        <tr>
+            <td>set_message(message)</td>
+            <td>Sets the message displayed over your character&#x27;s head.</td>
+            <td>set_message(&quot;Follow me!&quot;);</td>
+        </tr>
+    
+        <tr>
+            <td>change_server(region, id)</td>
+            <td>Changes to a different server by region and id.</td>
+            <td>change_server(&quot;US&quot;, 1);</td>
+        </tr>
+    
+    </table>
+</body>
+</html>
