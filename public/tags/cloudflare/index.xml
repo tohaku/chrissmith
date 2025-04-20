@@ -13,7 +13,7 @@
       <link>http://localhost:1313/posts/hello-world/</link>
       <pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate>
       <guid>http://localhost:1313/posts/hello-world/</guid>
-      <description>👋 Hello! Welcome to my blog / personal website. If you have already guessed from the URL - which I was pretty lucky to snag (chris-smith.net) - I’m Chris. I created this site to record and share the various projects I might be working on or things that I’m learning. It’ll help chart my growth in different areas but also be a cool little time machine to look back. Over the years, I’ve worked on tons of projects that were eventually scrapped — and I regret not saving anything to look back on.</description>
+      <description>&lt;p&gt;👋 Hello!  Welcome to my blog / personal website.  If you have already guessed from the URL - which I was pretty lucky to snag (&lt;a href=&#34;http://chris-smith.net&#34;&gt;chris-smith.net&lt;/a&gt;) - I’m Chris.  I created this site to record and share the various projects I might be working on or things that I’m learning.  It’ll help chart my growth in different areas but also be a cool little time machine to look back.  Over the years, I’ve worked on tons of projects that were eventually scrapped — and I regret not saving anything to look back on.  But it’s not all work — this will also be a spot to share travels, games, or movies I’m currently obsessed with.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
