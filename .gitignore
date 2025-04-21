@@ -1,0 +1,17 @@
+# Hugo generated files
+/public/
+/resources/
+/static/resume/
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Node Modules (if you use npm/yarn for anything)
+node_modules/
+
+# Sass cache
+.sass-cache/
+
+# VS Code settings specific to this workspace (optional)
+.vscode/
