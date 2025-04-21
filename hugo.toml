@@ -32,7 +32,7 @@ theme = 'triple-hyde'
 
 [params.social]
     instagram = "chris.tohaku/"
-    tryhackme = "tohaku"
+    thm = "tohaku"
     #github = "<username>"
     #linkedin = "<username>"
     #twitter = "<username>"
