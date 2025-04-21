@@ -3,13 +3,13 @@
 	<a href="https://twitter.com/{{.}}" rel="me">{{ partial "icon.html" "twitter" }}</a>
 	{{ end }}
 	{{ with .Site.Params.social.thm }}
-	<a href="https://tryhackme.com/p/{{.}}" rel="me">{{ partial "icon.html" "thm" }}</a>
+	<a href="https://tryhackme.com/p/{{.}}" target="_blank" rel="me">{{ partial "icon.html" "thm" }}</a>
 	{{ end }}
 	{{ with .Site.Params.social.facebook }}
 	<a href="https://facebook.com/{{.}}" rel="me">{{ partial "icon.html" "facebook" }}</a>
 	{{ end }}
 	{{ with .Site.Params.social.github }}
-	<a href="https://github.com/{{.}}" rel="me">{{ partial "icon.html" "github" }}</a>
+	<a href="https://github.com/{{.}}" target="_blank" rel="me">{{ partial "icon.html" "github" }}</a>
 	{{ end }}
 	{{ $gitlab_domain := "gitlab.com" }}
 	{{ with .Site.Params.social.custom_gitlab_domain }}
