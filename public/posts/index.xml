@@ -1,19 +1,83 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Posts on </title>
-    <link>http://localhost:1313/posts/</link>
-    <description>Recent content in Posts on </description>
-    <generator>Hugo</generator>
-    <language>en-us</language>
-    <lastBuildDate>Tue, 15 Apr 2025 00:00:00 +0000</lastBuildDate>
-    <atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Hello World!</title>
-      <link>http://localhost:1313/posts/hello-world/</link>
-      <pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate>
-      <guid>http://localhost:1313/posts/hello-world/</guid>
-      <description>&lt;p&gt;👋 Hello!  Welcome to my blog / personal website.  If you have already guessed from the URL - which I was pretty lucky to snag (&lt;a href=&#34;http://chris-smith.net&#34;&gt;chris-smith.net&lt;/a&gt;) - I’m Chris.  I created this site to record and share the various projects I might be working on or things that I’m learning.  It’ll help chart my growth in different areas but also be a cool little time machine to look back.  Over the years, I’ve worked on tons of projects that were eventually scrapped — and I regret not saving anything to look back on.  But it’s not all work — this will also be a spot to share travels, games, or movies I’m currently obsessed with.&lt;/p&gt;</description>
-    </item>
-  </channel>
+    <channel>
+        <title>Posts on Chris Smith</title>
+        <link>http://localhost:1313/posts/</link>
+        <description>Recent content in Posts on Chris Smith</description>
+        <generator>Hugo -- gohugo.io</generator>
+        <language>en</language>
+        <copyright>Chris Smith</copyright>
+        <lastBuildDate>Tue, 29 Jul 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Tahiti 2025</title>
+        <link>http://localhost:1313/posts/tahiti2025/</link>
+        <pubDate>Tue, 29 Jul 2025 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/posts/tahiti2025/</guid>
+        <description>&lt;h3 id=&#34;day-1&#34;&gt;Day 1
+&lt;/h3&gt;&lt;p&gt;We arrived in Tahiti around 6pm local time (9pm our time).  Immediately you notice how small the airport is.  Instead of disembarking the plane and going into a terminal, we were escorted onto the tarmac and into a building where we lined up for customs. Immediately behind customs are two bag terminals where upon getting your bag you walk right through some doors that say no re-entry and back outside!&lt;/p&gt;
+&lt;p&gt;We rented a little manual Peugeot 208 that we were lucky to get.  To my fault we hadn&amp;rsquo;t tried booking a car until the night before the trip and everything was sold out. Including the shadiest of looking car dealers.  Becca had managed to find one at Hertz I&amp;rsquo;d missed but come morning as we were preparing to leave, I got an email saying the car wasn&amp;rsquo;t available.  I asked ChatGPT agent to try again and within 22 minutes I was booking another car at Hertz.  By the time we landed there was another email that this rental wasn&amp;rsquo;t available but this time they offered a replacement.&lt;/p&gt;
+&lt;p&gt;The little Peugeot that could had no apparent damage but it&amp;rsquo;s maintanence light was already on.  Probably from other drivers abusing the clutch+transmission like I would soon do not having had driven a manual in a couple of years.  On top of that, I was used to a high revving Civic instead of the tiny 1.2L Peugeot that wanted to shift every 2.5 RPMS.  With a 1.2L , 5 speed, that&amp;rsquo;s a whopping 0-60 in 9.6 seconds.  You&amp;rsquo;d floor it and barely move but you&amp;rsquo;d still fly through the gears like you were.&lt;/p&gt;
+&lt;p&gt;Once in the car we headed for the next obvious stop, McDonalds.  Becca had barely eaten for a full day and I was just hungry.  Every McDonalds in foreign countries has something we don&amp;rsquo;t have in the States.  For this trip, that was the boss burger that was a quarter pounder with hawaiin bread instead of the normal sesami bun.&lt;/p&gt;
+&lt;p&gt;We then headed off to the AirBnb where we met with the owner who showed us around before crashing out in bed.&lt;/p&gt;
+&lt;h3 id=&#34;day-2&#34;&gt;Day 2
+&lt;/h3&gt;&lt;p&gt;Store trip
+Universal charget
+coral reef
+Pizza&lt;/p&gt;
+&lt;h3 id=&#34;day-3&#34;&gt;Day 3
+&lt;/h3&gt;&lt;p&gt;Store trip
+Walked to Le Passeon
+Swimming
+Grottes De Mara&amp;rsquo;a hike
+Kayak attempt (rain)
+Le Foodcourt
+storm driving back&lt;/p&gt;
+&lt;h3 id=&#34;day-4&#34;&gt;Day 4
+&lt;/h3&gt;&lt;p&gt;Store trip
+Papeete Market
+Black sand beach in Papeete, Ahonu Beach
+Boba
+Le Foodcourt
+Tsunami warning - Earthquake in Russia&lt;/p&gt;
+&lt;h3 id=&#34;day-5&#34;&gt;Day 5
+&lt;/h3&gt;&lt;p&gt;Drive out to Super U for snacks and drinks
+Went to pharmacy for IBProfin
+Drive out to hiking trail for water falls
+Hike was cancelled due to huge mudslide from the storm.
+Proposal
+McDs&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>Hello World!</title>
+        <link>http://localhost:1313/posts/hello-world/</link>
+        <pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/posts/hello-world/</guid>
+        <description>&lt;p&gt;👋 Hello!  Welcome to my blog / personal website.  If you have already guessed from the URL - which I was pretty lucky to snag (&lt;a class=&#34;link&#34; href=&#34;http://chris-smith.net&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;chris-smith.net&lt;/a&gt;) - I’m Chris.  I created this site to record and share the various projects I might be working on or things that I’m learning.  It’ll help chart my growth in different areas but also be a cool little time machine to look back.  Over the years, I’ve worked on tons of projects that were eventually scrapped — and I regret not saving anything to look back on.  But it’s not all work — this will also be a spot to share travels, games, or movies I’m currently obsessed with.&lt;/p&gt;
+&lt;p&gt;Thank you for dropping by and skimming what I’ve written.  If you’re curious of what cool tech I’m playing with for this site continue reading!&lt;/p&gt;
+&lt;h3 id=&#34;hugo&#34;&gt;Hugo
+&lt;/h3&gt;&lt;p&gt;This website is built using &lt;a class=&#34;link&#34; href=&#34;https://gohugo.io/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Hugo&lt;/a&gt; which is a website framework written in Go.  I love the simplicity Hugo brings when compared with sites like Wordpress, Ghost, or Squarespace.&lt;/p&gt;
+&lt;h3 id=&#34;cloudflare-pages&#34;&gt;Cloudflare Pages
+&lt;/h3&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://pages.cloudflare.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://pages.cloudflare.com&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;It’s free!!!  Cloudflare is an amazing platform that offers a lot of tools for home lab enthusiasts that are free and enhance security for your hosted services.  They offer a service for hosting static websites (supports Hugo) for free and you can point your own custom domain to it. Another cool thing is you can point it to Github so any change to your sites code is automatically recompiled and displayed on the website.&lt;/p&gt;
+&lt;h3 id=&#34;google-idx--firebase-studio&#34;&gt;Google IDX / Firebase Studio
+&lt;/h3&gt;&lt;p&gt;&lt;a class=&#34;link&#34; href=&#34;https://studio.firebase.google.com/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://studio.firebase.google.com/&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;This is a really cool tool that is basically an IDE in your browser that has AI (Google Gemini) and version control built in.  It also has a terminal so even though my code is remotely on that site I can still run hugo server -D and preview the changes I made to my website temporarily.&lt;/p&gt;
+&lt;p&gt;The builtin AI works really well.  I can ask it a question like “why is this still black” and it’ll go through all of the project files and give an explanation to why it’s black as well as a possible fix. This has really helped me save time and track down something that might be buried that I might never have found.  It also has a cool ability for all of the “vibe coding” that’s trending.  You can start off your coding project with a prompt and Google IDX (Firebase now) will present to you a blueprint breaking down everything you requested.  You have the ability to ask the AI to modify the blueprint.  Once you’re satisfied with the blueprint and click go, the AI starts coding all of the files it thinks you need.&lt;/p&gt;
+&lt;p&gt;I’m planning a future project where I want to prompt for a chess teaching application.  I want the ability to modify the pieces and board with my own sprites and have AI integration by having the user supply an API key for their AI of choice&lt;/p&gt;
+&lt;h3 id=&#34;projects-in-the-pipeline&#34;&gt;Projects in the pipeline
+&lt;/h3&gt;&lt;p&gt;Some projects I’m currently working on that I may blog about in the near future&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;🤖Chess application:&lt;/strong&gt; try my hand at “vibe coding” which is prompting ai to code an application. For this I’m looking to have the ability to use my own custom sprites for chess pieces and board that can be swapped out easily as well as have ai integration.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;🎮 Adventure Land MMORPG:&lt;/strong&gt;  A game a wish I had as a kid and wish I had found sooner since it hasn’t been updated in 2 years.  It’s a top down MMO similar to Ragnarok, but the idea behind it is you code your character or characters (you can run multiple at the same time) actions.  Currently I have grouping and follow logic done but I’m excited to expand that.&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        
+    </channel>
 </rss>

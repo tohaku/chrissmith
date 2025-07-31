@@ -1,6 +1,6 @@
 +++
 title = "Hello World!" 
-description = "" 
+description = "First blog post of new site" 
 tags = [ "personal","hugo","idx","cloudflare",] 
 date = "2025-04-15" 
 categories = [ "personal",]
