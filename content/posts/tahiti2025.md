@@ -48,3 +48,7 @@ Drive out to hiking trail for water falls
 Hike was cancelled due to huge mudslide from the storm.
 Proposal
 McDs
+
+### Day 6
+Hike falls
+food trucks
