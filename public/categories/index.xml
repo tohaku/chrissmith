@@ -7,10 +7,18 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
         <copyright>Chris Smith</copyright>
-        <lastBuildDate>Tue, 29 Jul 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 02 Aug 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Vacation</title>
+        <link>http://localhost:1313/categories/vacation/</link>
+        <pubDate>Sat, 02 Aug 2025 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/categories/vacation/</guid>
+        <description></description>
+        </item>
+        <item>
         <title>Personal</title>
         <link>http://localhost:1313/categories/personal/</link>
-        <pubDate>Tue, 29 Jul 2025 00:00:00 +0000</pubDate>
+        <pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate>
         
         <guid>http://localhost:1313/categories/personal/</guid>
         <description></description>
