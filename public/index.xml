@@ -7,7 +7,133 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
         <copyright>Chris Smith</copyright>
-        <lastBuildDate>Sat, 02 Aug 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Mon, 01 Sep 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>Home Lab - Custom Network</title>
+        <link>http://localhost:1313/posts/homelab-customnetwork/</link>
+        <pubDate>Mon, 01 Sep 2025 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/posts/homelab-customnetwork/</guid>
+        <description>&lt;img src="https://cdn.chris-smith.net/homelab/customnetwork/banner.png" alt="Featured image of post Home Lab - Custom Network" /&gt;&lt;h2 id=&#34;what-is-a-custom-network&#34;&gt;What is a custom network
+&lt;/h2&gt;&lt;p&gt;A custom network is a docker network that is bridged to a physical Unraid interface or VLAN interface on the host.  In this use case we’ll be setting up an ipvlan where all containers will have different IPs but share the same host MAC address.  This was done to avoid issues with MacVLANs in older Unraid versions and to keep it consistent with my other custom networks.&lt;/p&gt;
+&lt;h2 id=&#34;use-case&#34;&gt;Use case
+&lt;/h2&gt;&lt;p&gt;We’re creating an isolated VLAN for containers that should be extra locked down, like databases.  Only specific services will be granted access to containers on this network using firewall rules and this network will also be blocked from access to the internet.  Since containers are updated on the Unraid host itself and they’re just databases, blocking internet access should have no affect on anything.&lt;/p&gt;
+&lt;h2 id=&#34;creating-a-new-vlan-in-unifi&#34;&gt;Creating a new VLAN in Unifi
+&lt;/h2&gt;&lt;p&gt;Login to your Unifi network by browsing to it’s IP&lt;/p&gt;
+&lt;p&gt;Go to Settings → Networks → New Virtual Network
+&lt;figure&gt;&lt;img src=&#34;https://cdn.chris-smith.net/homelab/customnetwork/securenetwork.png&#34;
+    alt=&#34;network setup&#34;&gt;&lt;figcaption&gt;
+      &lt;p&gt;VLAN 8 Secure network setup in Unifi&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+Fill out the following details&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Name: Secure&lt;/li&gt;
+&lt;li&gt;Host Address: 192.168.80.1
+&lt;ul&gt;
+&lt;li&gt;I keep the netmask of 24 the same&lt;/li&gt;
+&lt;li&gt;This will auto populate other fields such as Gateway IP&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;VLAN ID: 8&lt;/li&gt;
+&lt;li&gt;Check only Isolate network so firewall rules are automatically created to block my other VLANs from accessing this.  Future firewall rules can be created to poke holes and let other services access containers on this network.&lt;/li&gt;
+&lt;li&gt;Uncheck all boxes including internet access in this use case.  Containers on this network have no need to connect to the internet and if they did that’s because they’ve probably been compromised.  Container updates are also done on the Unraid host itself so they won’t be blocked from upgrades.&lt;/li&gt;
+&lt;li&gt;DHCP off , I like to specify my own static IPs when creating containers.
+&lt;ul&gt;
+&lt;li&gt;I keep my static IPs documented in Google Docs to prevent conflicts.  Unraid will stop you if you do try to take an IP you’ve already used.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;figure&gt;&lt;img src=&#34;https://cdn.chris-smith.net/homelab/customnetwork/autofirewallrules.png&#34;
+    alt=&#34;Firewall rules&#34;&gt;&lt;figcaption&gt;
+      &lt;p&gt;Firewall rules that were automatically created&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;figure&gt;&lt;img src=&#34;https://cdn.chris-smith.net/homelab/customnetwork/autofirewallrules2.png&#34;
+    alt=&#34;Firewall rules&#34;&gt;&lt;figcaption&gt;
+      &lt;p&gt;Firewall rule details blocking access between VLANs&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;creating-an-ipvlan-network-in-unraid&#34;&gt;Creating an ipvlan network in Unraid
+&lt;/h2&gt;&lt;p&gt;I like to use an ipvlan network for Unraid because I can control access via my Unifi network system&lt;/p&gt;
+&lt;h3 id=&#34;disable-docker-and-vm-manager&#34;&gt;Disable Docker and VM Manager
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;I like to stop all containers and VMs manually first before disabling the services in the Unraid settings.&lt;/li&gt;
+&lt;li&gt;Disable docker
+&lt;ul&gt;
+&lt;li&gt;Settings → Docker&lt;/li&gt;
+&lt;li&gt;Enable Docker → set to no → click apply&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Disable VMs
+&lt;ul&gt;
+&lt;li&gt;Settings → VM Manager&lt;/li&gt;
+&lt;li&gt;Enable VMs → set to no → click apply&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;add-the-vlan-in-unraids-network-settings&#34;&gt;Add the VLAN in Unraids network settings
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Go to network manager and next to enable VLANs make sure it’s marked yes, then click the show button&lt;/li&gt;
+&lt;li&gt;Click ADD VLAN&lt;/li&gt;
+&lt;li&gt;Fill out the new VLAN info
+&lt;ul&gt;
+&lt;li&gt;Interface description: Secure&lt;/li&gt;
+&lt;li&gt;VLAN Number: 8&lt;/li&gt;
+&lt;li&gt;Network protocol: IPv4 only&lt;/li&gt;
+&lt;li&gt;IPv4 address assignment: none&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Click Apply
+&lt;figure&gt;&lt;img src=&#34;https://cdn.chris-smith.net/homelab/customnetwork/unraidnetwork.png&#34;
+    alt=&#34;unraid network&#34;&gt;&lt;figcaption&gt;
+      &lt;p&gt;Visual of the new VLAN settings in Unraids network settings&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;add-the-network-to-the-unraid-docker-settings&#34;&gt;Add the network to the Unraid docker settings
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Settings → docker&lt;/li&gt;
+&lt;li&gt;Docker should still be disabled&lt;/li&gt;
+&lt;li&gt;Docker custom network type should be ipvlan&lt;/li&gt;
+&lt;li&gt;At the bottom of the page you should see our new interface and in this case it’s br0.8 and it’s disabled.
+&lt;ul&gt;
+&lt;li&gt;Subnet: 192.168.80.0&lt;/li&gt;
+&lt;li&gt;Gateway: 192.168.80.1&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Click Apply.&lt;/li&gt;
+&lt;li&gt;You should now see a new custom ipvlan network (br0.8) appear as a dropdown option when creating containers.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure&gt;&lt;img src=&#34;https://cdn.chris-smith.net/homelab/customnetwork/unraiddockernetwork.png&#34;
+    alt=&#34;unraid docker network&#34;&gt;&lt;figcaption&gt;
+      &lt;p&gt;Visual of network settings for docker&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h3 id=&#34;bring-everything-back-online&#34;&gt;Bring everything back online
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Re-enable docker
+&lt;ul&gt;
+&lt;li&gt;Settings → Docker&lt;/li&gt;
+&lt;li&gt;Enable Docker → set to yes → click apply&lt;/li&gt;
+&lt;li&gt;Containers should auto-start if that is enabled&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Re-enable VMs
+&lt;ul&gt;
+&lt;li&gt;Settings → VM Manager&lt;/li&gt;
+&lt;li&gt;Enable VMs → set to yes → click apply&lt;/li&gt;
+&lt;li&gt;VMs should auto-start if that is enabled&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</description>
+        </item>
+        <item>
         <title>Tahiti Part 3</title>
         <link>http://localhost:1313/posts/tahiti2025p3/</link>
         <pubDate>Sat, 02 Aug 2025 00:00:00 +0000</pubDate>
@@ -16,7 +142,7 @@
         <description>&lt;img src="https://cdn.chris-smith.net/tahiti2025/part3/postbanner.jpg" alt="Featured image of post Tahiti Part 3" /&gt;&lt;div class=&#34;timeline&#34;&gt;
 Day 6
   &lt;div class=&#34;timeline-item&#34;&gt;
-  &lt;div class=&#34;timeline-col timeline-text&#34;&gt;&lt;h3 class=&#34;timeline-title&#34;&gt;Les Trois Cascades&lt;/h3&gt;&lt;div class=&#34;timeline-body&#34;&gt;To beat the rain happening on our side of the island we head north just past Papeete to Les Trois Cascades.  A small hike with multiple large waterfalls.&lt;/div&gt;
+  &lt;div class=&#34;timeline-col timeline-text&#34;&gt;&lt;h3 class=&#34;timeline-title&#34;&gt;Les Trois Cascades&lt;/h3&gt;&lt;div class=&#34;timeline-body&#34;&gt;We start the morning off by pulling out the kayaks and taking a swim before eventually heading north just past Papeete to Les Trois Cascades.  A small hike with multiple large waterfalls.&lt;/div&gt;
   &lt;/div&gt;
   &lt;div class=&#34;timeline-col timeline-media&#34;&gt;&lt;figure&gt;
         &lt;img src=&#34;https://cdn.chris-smith.net/tahiti2025/part3/lestroiscascadessign.jpg&#34; alt=&#34;Les Trois Cascades&#34; loading=&#34;lazy&#34; /&gt;&lt;figcaption&gt;Les Trois Cascades&lt;/figcaption&gt;&lt;/figure&gt;&lt;/div&gt;
@@ -76,6 +202,56 @@ Day 7
   &lt;div class=&#34;timeline-col timeline-media&#34;&gt;&lt;figure&gt;
         &lt;img src=&#34;https://cdn.chris-smith.net/tahiti2025/part3/leaving2.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;&lt;figcaption&gt;Boarding our plane&lt;/figcaption&gt;&lt;/figure&gt;&lt;/div&gt;
 &lt;/div&gt;
+
+
+&lt;/div&gt;
+
+
+</description>
+        </item>
+        <item>
+        <title>Sample: Timeline Post</title>
+        <link>http://localhost:1313/posts/timeline-sample/</link>
+        <pubDate>Fri, 01 Aug 2025 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/posts/timeline-sample/</guid>
+        <description>&lt;p&gt;This sample shows how to use the timeline shortcodes to pair a short blurb on the left with an image on the right.&lt;/p&gt;
+&lt;div class=&#34;timeline&#34;&gt;
+
+  &lt;div class=&#34;timeline-item&#34;&gt;
+  &lt;div class=&#34;timeline-col timeline-text&#34;&gt;&lt;h3 class=&#34;timeline-title&#34;&gt;Arrival&lt;/h3&gt;&lt;div class=&#34;timeline-body&#34;&gt;We arrived just before sunset and checked into our stay. The air was warm and the sky was glowing.&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&#34;timeline-col timeline-media&#34;&gt;&lt;figure&gt;
+        &lt;img src=&#34;https://picsum.photos/id/1015/960/600&#34; alt=&#34;Arrival&#34; loading=&#34;lazy&#34; /&gt;&lt;figcaption&gt;Landing at golden hour&lt;/figcaption&gt;&lt;/figure&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+
+
+  &lt;div class=&#34;timeline-item&#34;&gt;
+  &lt;div class=&#34;timeline-col timeline-text&#34;&gt;&lt;h3 class=&#34;timeline-title&#34;&gt;First Morning&lt;/h3&gt;&lt;div class=&#34;timeline-body&#34;&gt;Slow morning, fresh coffee, and a short walk to explore the neighborhood before planning the day.&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&#34;timeline-col timeline-media&#34;&gt;&lt;figure&gt;
+        &lt;img src=&#34;https://picsum.photos/id/1025/960/600&#34; alt=&#34;First Morning&#34; loading=&#34;lazy&#34; /&gt;&lt;figcaption&gt;Coffee with a view&lt;/figcaption&gt;&lt;/figure&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+
+
+  &lt;div class=&#34;timeline-item&#34;&gt;
+  &lt;div class=&#34;timeline-col timeline-text&#34;&gt;&lt;h3 class=&#34;timeline-title&#34;&gt;Afternoon Adventure&lt;/h3&gt;&lt;div class=&#34;timeline-body&#34;&gt;We followed a coastal trail, stopping for photos and a quick snack while the waves crashed below.&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&#34;timeline-col timeline-media&#34;&gt;&lt;figure&gt;
+        &lt;img src=&#34;https://picsum.photos/id/1003/960/600&#34; alt=&#34;Afternoon Adventure&#34; loading=&#34;lazy&#34; /&gt;&lt;figcaption&gt;Trail along the coast&lt;/figcaption&gt;&lt;/figure&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+
+
+  &lt;div class=&#34;timeline-item&#34;&gt;
+  &lt;div class=&#34;timeline-col timeline-text&#34;&gt;&lt;h3 class=&#34;timeline-title&#34;&gt;Dinner&lt;/h3&gt;&lt;div class=&#34;timeline-body&#34;&gt;Wrapped up with dinner at a small spot we found on the way back—simple, fresh, and delicious.&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&#34;timeline-col timeline-media&#34;&gt;&lt;figure&gt;
+        &lt;img src=&#34;https://picsum.photos/id/1035/960/600&#34; alt=&#34;Dinner&#34; loading=&#34;lazy&#34; /&gt;&lt;figcaption&gt;Local flavors&lt;/figcaption&gt;&lt;/figure&gt;&lt;/div&gt;
+&lt;/div&gt;
+
 
 
 &lt;/div&gt;
