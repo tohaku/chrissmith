@@ -11,7 +11,7 @@ image="https://cdn.chris-smith.net/tahiti2025/part3/postbanner.jpg"
 {{< timeline >}}
 Day 6
   {{< timeline-item title="Les Trois Cascades" image="https://cdn.chris-smith.net/tahiti2025/part3/lestroiscascadessign.jpg" caption="Les Trois Cascades" >}}
-  To beat the rain happening on our side of the island we head north just past Papeete to Les Trois Cascades.  A small hike with multiple large waterfalls.
+  We start the morning off by pulling out the kayaks and taking a swim before eventually heading north just past Papeete to Les Trois Cascades.  A small hike with multiple large waterfalls.
   {{< /timeline-item >}}
 
   {{< timeline-item title="" image="https://cdn.chris-smith.net/tahiti2025/part3/falls2.jpg" caption="" >}}
