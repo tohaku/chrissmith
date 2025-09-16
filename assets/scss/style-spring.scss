@@ -1,0 +1,29 @@
+/* Seasonal variant: Spring overrides only
+ * Loaded after base theme CSS
+ */
+
+:root {
+  --accent-color: #2ecc71;          /* spring green */
+  --accent-color-darker: #27ae60;
+  --accent-color-text: #ffffff;
+  --body-background: #f2f9f2;       /* light greenish */
+}
+
+:root[data-scheme="dark"] {
+  --body-background: #1e2a22;       /* dark green tint */
+  --accent-color: #7ee2a8;
+  --accent-color-darker: #58c58a;
+  --accent-color-text: #000;
+}
+
+.left-sidebar {
+  background: var(--sidebar-bg-image, none) center/cover no-repeat;
+}
+
+.left-sidebar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+}

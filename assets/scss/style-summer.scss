@@ -1,0 +1,29 @@
+/* Seasonal variant: Summer overrides only
+ * Loaded after base theme CSS
+ */
+
+:root {
+  --accent-color: #f39c12;          /* summer orange */
+  --accent-color-darker: #d68910;
+  --accent-color-text: #000000;
+  --body-background: #fff8e6;       /* warm, sunny */
+}
+
+:root[data-scheme="dark"] {
+  --body-background: #2b2417;       /* warm dark */
+  --accent-color: #ffcf66;
+  --accent-color-darker: #e6ad2e;
+  --accent-color-text: #000;
+}
+
+.left-sidebar {
+  background: var(--sidebar-bg-image, none) center/cover no-repeat;
+}
+
+.left-sidebar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+}

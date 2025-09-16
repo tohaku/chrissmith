@@ -72,35 +72,19 @@
         <description></description>
         </item>
         <item>
-        <title>Demo</title>
-        <link>http://localhost:1313/tags/demo/</link>
-        <pubDate>Fri, 01 Aug 2025 00:00:00 +0000</pubDate>
-        
-        <guid>http://localhost:1313/tags/demo/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>Hugo</title>
-        <link>http://localhost:1313/tags/hugo/</link>
-        <pubDate>Fri, 01 Aug 2025 00:00:00 +0000</pubDate>
-        
-        <guid>http://localhost:1313/tags/hugo/</guid>
-        <description></description>
-        </item>
-        <item>
-        <title>Timeline</title>
-        <link>http://localhost:1313/tags/timeline/</link>
-        <pubDate>Fri, 01 Aug 2025 00:00:00 +0000</pubDate>
-        
-        <guid>http://localhost:1313/tags/timeline/</guid>
-        <description></description>
-        </item>
-        <item>
         <title>Cloudflare</title>
         <link>http://localhost:1313/tags/cloudflare/</link>
         <pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate>
         
         <guid>http://localhost:1313/tags/cloudflare/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Hugo</title>
+        <link>http://localhost:1313/tags/hugo/</link>
+        <pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/tags/hugo/</guid>
         <description></description>
         </item>
         <item>

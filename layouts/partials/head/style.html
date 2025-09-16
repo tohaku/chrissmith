@@ -1,0 +1,13 @@
+{{/* Load base theme stylesheet first */}}
+{{ $base := resources.Get "scss/style.scss" | toCSS | minify | resources.Fingerprint "sha256" }}
+<link rel="stylesheet" href="{{ $base.RelPermalink }}">
+
+{{/* Optional seasonal override: loads after base */}}
+{{ $variant := default "" .Site.Params.themeVariant }}
+{{ if $variant }}
+  {{ $override := resources.Get (printf "scss/style-%s.scss" $variant) }}
+  {{ if $override }}
+    {{ $ov := $override | toCSS | minify | resources.Fingerprint "sha256" }}
+    <link rel="stylesheet" href="{{ $ov.RelPermalink }}">
+  {{ end }}
+{{ end }}

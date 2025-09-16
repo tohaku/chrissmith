@@ -12,6 +12,7 @@ DefaultContentLanguage: en
 # This will make .Summary and .WordCount behave correctly for CJK languages.
 hasCJKLanguage: false
 
+
 languages:
     en:
         languageName: English
@@ -40,6 +41,11 @@ params:
     featuredImageField: image
     rssFullContent: true
     favicon: https://cdn.chris-smith.net/isometricAussie.webp
+
+    # seasonal website theme (set variant name, optional sidebar image)
+    #look in assets/scss/
+    themeVariant: 
+    sidebarBgImage:
 
     footer:
         since: 2025

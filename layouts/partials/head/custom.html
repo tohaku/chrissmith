@@ -1,0 +1,7 @@
+{{/* Optional: set a sidebar background image via config param */}}
+{{ with .Site.Params.sidebarBgImage }}
+<style>
+:root { --sidebar-bg-image: url('{{ . }}'); }
+</style>
+{{ end }}
+
