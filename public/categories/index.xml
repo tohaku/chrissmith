@@ -2,33 +2,33 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Categories on Chris Smith</title>
-        <link>http://localhost:1313/categories/</link>
+        <link>https://chris-smith.net/categories/</link>
         <description>Recent content in Categories on Chris Smith</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
         <copyright>Chris Smith</copyright>
-        <lastBuildDate>Mon, 01 Sep 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 05 Oct 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://chris-smith.net/categories/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>HomeLab</title>
-        <link>http://localhost:1313/categories/homelab/</link>
-        <pubDate>Mon, 01 Sep 2025 00:00:00 +0000</pubDate>
+        <link>https://chris-smith.net/categories/homelab/</link>
+        <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/categories/homelab/</guid>
+        <guid>https://chris-smith.net/categories/homelab/</guid>
         <description></description>
         </item>
         <item>
         <title>Vacation</title>
-        <link>http://localhost:1313/categories/vacation/</link>
+        <link>https://chris-smith.net/categories/vacation/</link>
         <pubDate>Sat, 02 Aug 2025 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/categories/vacation/</guid>
+        <guid>https://chris-smith.net/categories/vacation/</guid>
         <description></description>
         </item>
         <item>
         <title>Personal</title>
-        <link>http://localhost:1313/categories/personal/</link>
+        <link>https://chris-smith.net/categories/personal/</link>
         <pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/categories/personal/</guid>
+        <guid>https://chris-smith.net/categories/personal/</guid>
         <description></description>
         </item>
         

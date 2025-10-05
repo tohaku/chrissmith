@@ -27,3 +27,16 @@
   background: rgba(0, 0, 0, 0.2);
   pointer-events: none;
 }
+
+.article-toc {
+  margin: 2rem 0;
+
+  h2 {
+    margin: 0 0 0.75rem;
+    font-size: 1.25rem;
+  }
+
+  .widget--toc {
+    padding: 1rem 1.25rem;
+  }
+}

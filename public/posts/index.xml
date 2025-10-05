@@ -2,23 +2,437 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Posts on Chris Smith</title>
-        <link>http://localhost:1313/posts/</link>
+        <link>https://chris-smith.net/posts/</link>
         <description>Recent content in Posts on Chris Smith</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
         <copyright>Chris Smith</copyright>
-        <lastBuildDate>Mon, 01 Sep 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/posts/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sun, 05 Oct 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://chris-smith.net/posts/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>OIDC - PocketID</title>
+        <link>https://chris-smith.net/posts/pocketid/</link>
+        <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+        
+        <guid>https://chris-smith.net/posts/pocketid/</guid>
+        <description>&lt;img src="https://cdn.chris-smith.net/homelab/pocketid/banner.png" alt="Featured image of post OIDC - PocketID" /&gt;&lt;h2 id=&#34;what-is-pocket-id&#34;&gt;What is Pocket ID
+&lt;/h2&gt;&lt;p&gt;Pocket ID is a provider that handles logins using passkeys instead of passwords. It runs as an OpenID Connect (OIDC) provider, which means apps that support OIDC or external SSO can hook into it and let me log in securely without ever dealing with a username or password.&lt;/p&gt;
+&lt;h2 id=&#34;resources&#34;&gt;Resources
+&lt;/h2&gt;&lt;p&gt;Github: &lt;a class=&#34;link&#34; href=&#34;https://github.com/pocket-id/pocket-id&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://github.com/pocket-id/pocket-id&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Documentation: &lt;a class=&#34;link&#34; href=&#34;https://pocket-id.org/docs&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://pocket-id.org/docs&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Geolite key: &lt;a class=&#34;link&#34; href=&#34;https://www.maxmind.com/en/geolite2/signup&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.maxmind.com/en/geolite2/signup&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Pocket ID has an official Docker container in Apps in Unraid&lt;/p&gt;
+&lt;h2 id=&#34;initial-setup&#34;&gt;Initial Setup
+&lt;/h2&gt;&lt;h3 id=&#34;geolite&#34;&gt;GeoLite
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Sign up on the linked site for a GeoLite database key. Without it, you won’t see IP locations in your logs.
+&lt;ul&gt;
+&lt;li&gt;&lt;a class=&#34;link&#34; href=&#34;https://www.maxmind.com/en/geolite2/signup&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://www.maxmind.com/en/geolite2/signup&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Log in to &lt;a class=&#34;link&#34; href=&#34;http://maxmind.com&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;maxmind.com&lt;/a&gt; after your account is created&lt;/li&gt;
+&lt;li&gt;Click Manage license keys&lt;/li&gt;
+&lt;li&gt;Create license key&lt;/li&gt;
+&lt;li&gt;Specify a name. I like to put the name of the container I’m using the key for&lt;/li&gt;
+&lt;li&gt;Keep this page open so you can copy and paste the key into your container variable&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;container-setup&#34;&gt;Container Setup
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Using the official Docker container in Unraid for this setup
+&lt;ul&gt;
+&lt;li&gt;Search the Apps tab for Pocket ID to find it&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Kept most values at default except for the below
+&lt;ul&gt;
+&lt;li&gt;Changed network type to a custom network for web‑facing containers&lt;/li&gt;
+&lt;li&gt;Changed app URL&lt;/li&gt;
+&lt;li&gt;Set Behind Proxy to true for NGINX&lt;/li&gt;
+&lt;li&gt;Input MaxMind license key from earlier&lt;/li&gt;
+&lt;li&gt;I kept the default SQLite database that’s part of the container. The only external database option Pocket ID works with is PostgreSQL, so it won’t work with my existing MariaDB database&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Submit and view container logs for any errors&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;proxy-setup&#34;&gt;Proxy Setup
+&lt;/h3&gt;&lt;p&gt;I use SWAG from LinuxServer (&lt;a class=&#34;link&#34; href=&#34;https://docs.linuxserver.io/images/docker-swag/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;link&lt;/a&gt;). As of this writing they don’t have a template NGINX config for Pocket ID, so we’ll be creating our own.&lt;/p&gt;
+&lt;h4 id=&#34;steps&#34;&gt;Steps
+&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;Copied proxy.conf and created a new file proxypocketid.conf
+&lt;ul&gt;
+&lt;li&gt;Pocket ID’s documentation mentions needing larger proxy buffers than what’s in the standard proxy.conf file. Increasing those in the proxy.conf file could cause issues with other sites, so it’s better to just create a whole new config file&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Added the below proxy buffers to our new config file
+&lt;ul&gt;
+&lt;li&gt;proxy_busy_buffers_size   512k;&lt;/li&gt;
+&lt;li&gt;proxy_buffers   4 512k;&lt;/li&gt;
+&lt;li&gt;proxy_buffer_size   256k;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Removed the old proxy_buffers value&lt;/li&gt;
+&lt;li&gt;Created a new NGINX config for Pocket ID. Example of my config is below. This config also includes the previous config file we created&lt;/li&gt;
+&lt;li&gt;Restart the SWAG container and view the logs for any issues&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&#34;nginx-config-files&#34;&gt;Nginx config files
+&lt;/h4&gt;&lt;p&gt;proxypocketid.conf&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;34
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;35
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;36
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;37
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;38
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;39
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;40
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;41
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;42
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c&#34;&gt;## Version 2023/02/09 - Changelog: [https://github.com/linuxserver/docker-swag/commits/master/root/defaults/nginx/proxy.conf.sample](https://github.com/linuxserver/docker-swag/commits/master/root/defaults/nginx/proxy.conf.sample)&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# Timeout if the real server is dead&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;proxy_next_upstream error timeout invalid_header http_500 http_502 http_503;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# Proxy adjustments per Pocket ID documentation&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;proxy_busy_buffers_size   512k;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;proxy_buffers   4 512k;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;proxy_buffer_size   256k;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# Proxy Connection Settings&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;#proxy_buffers 32 4k;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;proxy_connect_timeout 240;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;proxy_headers_hash_bucket_size 128;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;proxy_headers_hash_max_size 1024;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;proxy_http_version 1.1;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;proxy_read_timeout 240;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;proxy_redirect http:// $scheme://;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;proxy_send_timeout 240;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# Proxy Cache and Cookie Settings&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;proxy_cache_bypass $cookie_session;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;#proxy_cookie_path / &amp;#34;/; Secure&amp;#34;; # enable at your own risk, may break certain apps&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;proxy_no_cache $cookie_session;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# Proxy Header Settings&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;proxy_set_header Connection $connection_upgrade;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;proxy_set_header Early-Data $ssl_early_data;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;proxy_set_header Host $host;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;proxy_set_header Proxy &amp;#34;&amp;#34;;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;proxy_set_header Upgrade $http_upgrade;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;proxy_set_header X-Forwarded-Host $host;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;proxy_set_header X-Forwarded-Method $request_method;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;proxy_set_header X-Forwarded-Port $server_port;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;proxy_set_header X-Forwarded-Proto $scheme;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;proxy_set_header X-Forwarded-Server $host;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;proxy_set_header X-Forwarded-Ssl on;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;proxy_set_header X-Forwarded-Uri $request_uri;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;proxy_set_header X-Original-Method $request_method;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;proxy_set_header X-Original-URL $scheme://$http_host$request_uri;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;proxy_set_header X-Real-IP $remote_addr;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Nginx Config&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;29
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;30
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;31
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;32
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;33
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;34
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;35
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;36
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c&#34;&gt;# Redirect HTTP → HTTPS (SWAG terminates TLS)&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;server {&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;listen 80;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;listen [::]:80;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;server_name [dashboard.chris-smith.net](http://dashboard.chris-smith.net);&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;return 301 [https://$host$request_uri](https://$host$request_uri);&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;}&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;l&#34;&gt;server {&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;listen 443 ssl;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;listen [::]:443 ssl;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;http2 on;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;server_name [dashboard.chris-smith.net](http://dashboard.chris-smith.net);&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# SWAG SSL &amp;amp; security presets (HSTS, modern ciphers, etc.)&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;include /config/nginx/ssl.conf;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# Allow larger OIDC POSTs&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;client_max_body_size 10m;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;location / {&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;        &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# SWAG proxy defaults: X-Forwarded-* headers, websockets, timeouts, etc.&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;        &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;include /config/nginx/proxypocketid.conf;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;        &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# Uses Docker DNS if SWAG runs in a Docker network&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;        &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;include /config/nginx/resolver.conf;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;        &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# Upstream to the Pocket ID container&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;        &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;set $upstream_app 192.168.40.5;  &lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# container name or service DNS&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;        &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;set $upstream_port 1411;     &lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;c&#34;&gt;# Pocket ID’s internal port&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;        &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;set $upstream_proto http;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;        &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;proxy_pass $upstream_proto://$upstream_app:$upstream_port;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;}&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;}&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;configure-dns&#34;&gt;Configure DNS
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Set up a static local DNS record
+&lt;ul&gt;
+&lt;li&gt;Routes traffic internally without needing to go out to the internet&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Set up a DNS record in Cloudflare
+&lt;ul&gt;
+&lt;li&gt;Routes traffic from the internet over Cloudflare tunnel&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;configuring-pocket-id&#34;&gt;Configuring Pocket ID
+&lt;/h2&gt;&lt;h3 id=&#34;admin-account-setup&#34;&gt;Admin Account Setup
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Browse to https://{your-site-domain}/setup&lt;/li&gt;
+&lt;li&gt;Enter your account information&lt;/li&gt;
+&lt;li&gt;Add passkey
+&lt;ul&gt;
+&lt;li&gt;Works with your password manager, browser, or hardware passkeys like YubiKeys&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;block-signups-page-with-nginx&#34;&gt;Block signups page with NGINX
+&lt;/h3&gt;&lt;p&gt;Despite completing the initial admin setup and disabling the option for future users to go through the signup page, it was still visible. Blocking this page by adding the below location block to the Pocket ID NGINX config&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;l&#34;&gt;location /signup/setup {&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;        &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;deny all;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;        &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;return 404;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;}&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;setup-your-apps&#34;&gt;Setup your apps
+&lt;/h2&gt;&lt;h3 id=&#34;romm&#34;&gt;Romm
+&lt;/h3&gt;&lt;p&gt;Romm documentation: &lt;a class=&#34;link&#34; href=&#34;https://docs.romm.app/3.8.3/OIDC-Guides/OIDC-Setup-With-PocketID/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://docs.romm.app/3.8.3/OIDC-Guides/OIDC-Setup-With-PocketID/&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&#34;what-is-it&#34;&gt;What is it
+&lt;/h4&gt;&lt;p&gt;Romm is an amazing browser‑based ROM and emulator application. It acts as a ROM management system pulling in metadata from different gaming databases and also lets you play most old ROMs in the browser.&lt;/p&gt;
+&lt;h4 id=&#34;setup-steps&#34;&gt;Setup Steps
+&lt;/h4&gt;&lt;p&gt;Pocket ID add OIDC client&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;In settings go to application configuration → tick “Emails Verified”&lt;/li&gt;
+&lt;li&gt;OIDC Clients&lt;/li&gt;
+&lt;li&gt;Click Add OIDC Client button&lt;/li&gt;
+&lt;li&gt;Fill out Name and Client Launch URL
+&lt;ul&gt;
+&lt;li&gt;Name: Romm&lt;/li&gt;
+&lt;li&gt;Client Launch URL: https://{domain}/api/oauth/openid&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Click Save&lt;/li&gt;
+&lt;li&gt;Make a note of the client ID and Secret. You won’t see it after the page refreshes&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Configure Romm container&lt;/p&gt;
+&lt;p&gt;I already had a container so I added these variables to my existing one.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Add these environment variables to the romm container
+&lt;ul&gt;
+&lt;li&gt;OIDC_ENABLED: true&lt;/li&gt;
+&lt;li&gt;OIDC_PROVIDER: pocketid&lt;/li&gt;
+&lt;li&gt;OIDC_CLIENT_ID: client id saved from pocket id&lt;/li&gt;
+&lt;li&gt;OIDC_CLIENT_SECRET: client secret saved from pocket id&lt;/li&gt;
+&lt;li&gt;OIDC_REDIRECT_URI: https://{domain}/api/oauth/openid&lt;/li&gt;
+&lt;li&gt;OIDC_SERVER_APPLICATION_URL: https://{pocket ID URL}
+&lt;ul&gt;
+&lt;li&gt;NOTE!! This differs than ROMM’s documentation. Using /authorize at the end of the domain gave me a 200 error.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Submit and view the logs for any errors&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Configure Romm&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Make sure email for your email address matches the email used in Pocket ID&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Test&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Romm now shows an option to log in with Pocket ID in addition to the typical username/password&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;nextcloud&#34;&gt;NextCloud
+&lt;/h3&gt;&lt;p&gt;Enable OpenID Connect Login&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Nextcloud → Apps → Integration → OpenID Connect Login (official)&lt;/li&gt;
+&lt;li&gt;Click allow untested app if it says that&lt;/li&gt;
+&lt;li&gt;Followed by Download and enable&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Browse to this URL and save the information for later&lt;/p&gt;
+&lt;p&gt;https://&lt;pocketid&gt;/.well-known/openid-configuration&lt;/p&gt;
+&lt;p&gt;Configure PocketID&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Go to pocketID → Settings&lt;/li&gt;
+&lt;li&gt;OIDC Clients&lt;/li&gt;
+&lt;li&gt;Add OIDC client&lt;/li&gt;
+&lt;li&gt;Settings to configure
+&lt;ul&gt;
+&lt;li&gt;Name = Nextcloud&lt;/li&gt;
+&lt;li&gt;Client Launch URL = &lt;a class=&#34;link&#34; href=&#34;https://nextcloud.smithc.net&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://nextcloud.smithc.net&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Callback URL = &lt;a class=&#34;link&#34; href=&#34;https://nextcloud.chris-smith.net/apps/oidc_login/oidc&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;https://nextcloud.chris-smith.net/apps/oidc_login/oidc&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Logout Callback URL = https://&lt;your-nextcloud-domain&gt;/index.php/logout&lt;/li&gt;
+&lt;li&gt;Click Save → don’t close this page!&lt;/li&gt;
+&lt;li&gt;Save Client ID &amp;amp; Client Secret for later&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Configure Nextcloud&lt;/p&gt;
+&lt;p&gt;It’s time to input all of the information we’ve saved into Nextcloud’s config.php file&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;oidc_login_provider_url&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;=&amp;gt; &amp;#39;[https://pocketid.chris-smith.net](https://pocketid.chris-smith.net)&amp;#39;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;oidc_login_client_id&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;=&amp;gt; &amp;#39;nextcloud&amp;#39;,   // replace with your client ID&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;oidc_login_client_secret&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;=&amp;gt; &amp;#39;YOURSECRET&amp;#39;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;oidc_login_end_session_redirect&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;=&amp;gt; true,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;oidc_login_scope&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;=&amp;gt; &amp;#39;openid profile email&amp;#39;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;oidc_login_match_email&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;=&amp;gt; true,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;oidc_login_attributes&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;=&amp;gt; [&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;id&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;=&amp;gt; &amp;#39;sub&amp;#39;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;name&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;=&amp;gt; &amp;#39;name&amp;#39;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;    &lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;mail&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;  &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;=&amp;gt; &amp;#39;email&amp;#39;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;],&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;redirectUri&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;=&amp;gt; &amp;#39;[https://nextcloud.chris-smith.net/apps/oidc_login/oidc](https://nextcloud.chris-smith.net/apps/oidc_login/oidc)&amp;#39;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;w&#34;&gt;&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;autoRedirect&amp;#39;&lt;/span&gt;&lt;span class=&#34;w&#34;&gt; &lt;/span&gt;&lt;span class=&#34;l&#34;&gt;=&amp;gt; &amp;#39;true&amp;#39;,&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;I enabled account creation based on PocketID login by running the below command in the Unraid terminal&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;l&#34;&gt;docker exec Nextcloud php occ config:system:set oidc_login_disable_registration --value=false --type=boolean&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Nextcloud should now have an OpenID Connect button that redirects to PocketID for authentication. If a user doesn’t exist it creates one.&lt;/p&gt;
+&lt;h2 id=&#34;troubleshooting&#34;&gt;Troubleshooting
+&lt;/h2&gt;&lt;h3 id=&#34;logs&#34;&gt;Logs
+&lt;/h3&gt;&lt;p&gt;Romm logs&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-yaml&#34; data-lang=&#34;yaml&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;l&#34;&gt;docker logs -f romm&lt;/span&gt;&lt;span class=&#34;w&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;</description>
+        </item>
+        <item>
         <title>Home Lab - Custom Network</title>
-        <link>http://localhost:1313/posts/homelab-customnetwork/</link>
+        <link>https://chris-smith.net/posts/homelab-customnetwork/</link>
         <pubDate>Mon, 01 Sep 2025 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/posts/homelab-customnetwork/</guid>
-        <description>&lt;img src="https://cdn.chris-smith.net/homelab/customnetwork/banner.png" alt="Featured image of post Home Lab - Custom Network" /&gt;&lt;h2 id=&#34;what-is-a-custom-network&#34;&gt;What is a custom network
-&lt;/h2&gt;&lt;p&gt;A custom network is a docker network that is bridged to a physical Unraid interface or VLAN interface on the host.  In this use case we’ll be setting up an ipvlan where all containers will have different IPs but share the same host MAC address.  This was done to avoid issues with MacVLANs in older Unraid versions and to keep it consistent with my other custom networks.&lt;/p&gt;
-&lt;h2 id=&#34;use-case&#34;&gt;Use case
-&lt;/h2&gt;&lt;p&gt;We’re creating an isolated VLAN for containers that should be extra locked down, like databases.  Only specific services will be granted access to containers on this network using firewall rules and this network will also be blocked from access to the internet.  Since containers are updated on the Unraid host itself and they’re just databases, blocking internet access should have no affect on anything.&lt;/p&gt;
-&lt;h2 id=&#34;creating-a-new-vlan-in-unifi&#34;&gt;Creating a new VLAN in Unifi
-&lt;/h2&gt;&lt;p&gt;Login to your Unifi network by browsing to it’s IP&lt;/p&gt;
+        <guid>https://chris-smith.net/posts/homelab-customnetwork/</guid>
+        <description>&lt;img src="https://cdn.chris-smith.net/homelab/customnetwork/banner2.png" alt="Featured image of post Home Lab - Custom Network" /&gt;&lt;h3 id=&#34;what-is-a-custom-network&#34;&gt;What is a custom network
+&lt;/h3&gt;&lt;p&gt;A custom network is a docker network that is bridged to a physical Unraid interface or VLAN interface on the host.  In this use case we’ll be setting up an ipvlan where all containers will have different IPs but share the same host MAC address.  This was done to avoid issues with MacVLANs in older Unraid versions and to keep it consistent with my other custom networks.&lt;/p&gt;
+&lt;h3 id=&#34;use-case&#34;&gt;Use case
+&lt;/h3&gt;&lt;p&gt;We’re creating an isolated VLAN for containers that should be extra locked down, like databases.  Only specific services will be granted access to containers on this network using firewall rules and this network will also be blocked from access to the internet.  Since containers are updated on the Unraid host itself and they’re just databases, blocking internet access should have no affect on anything.&lt;/p&gt;
+&lt;h3 id=&#34;creating-a-new-vlan-in-unifi&#34;&gt;Creating a new VLAN in Unifi
+&lt;/h3&gt;&lt;p&gt;Login to your Unifi network by browsing to it’s IP&lt;/p&gt;
 &lt;p&gt;Go to Settings → Networks → New Virtual Network
 &lt;figure&gt;&lt;img src=&#34;https://cdn.chris-smith.net/homelab/customnetwork/securenetwork.png&#34;
     alt=&#34;network setup&#34;&gt;&lt;figcaption&gt;
@@ -56,10 +470,10 @@ Fill out the following details&lt;/p&gt;
     &lt;/figcaption&gt;
 &lt;/figure&gt;
 &lt;/p&gt;
-&lt;h2 id=&#34;creating-an-ipvlan-network-in-unraid&#34;&gt;Creating an ipvlan network in Unraid
-&lt;/h2&gt;&lt;p&gt;I like to use an ipvlan network for Unraid because I can control access via my Unifi network system&lt;/p&gt;
-&lt;h3 id=&#34;disable-docker-and-vm-manager&#34;&gt;Disable Docker and VM Manager
-&lt;/h3&gt;&lt;ul&gt;
+&lt;h3 id=&#34;creating-an-ipvlan-network-in-unraid&#34;&gt;Creating an ipvlan network in Unraid
+&lt;/h3&gt;&lt;p&gt;I like to use an ipvlan network for Unraid because I can control access via my Unifi network system&lt;/p&gt;
+&lt;h4 id=&#34;disable-docker-and-vm-manager&#34;&gt;Disable Docker and VM Manager
+&lt;/h4&gt;&lt;ul&gt;
 &lt;li&gt;I like to stop all containers and VMs manually first before disabling the services in the Unraid settings.&lt;/li&gt;
 &lt;li&gt;Disable docker
 &lt;ul&gt;
@@ -74,8 +488,8 @@ Fill out the following details&lt;/p&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;add-the-vlan-in-unraids-network-settings&#34;&gt;Add the VLAN in Unraids network settings
-&lt;/h3&gt;&lt;ul&gt;
+&lt;h4 id=&#34;add-the-vlan-in-unraids-network-settings&#34;&gt;Add the VLAN in Unraids network settings
+&lt;/h4&gt;&lt;ul&gt;
 &lt;li&gt;Go to network manager and next to enable VLANs make sure it’s marked yes, then click the show button&lt;/li&gt;
 &lt;li&gt;Click ADD VLAN&lt;/li&gt;
 &lt;li&gt;Fill out the new VLAN info
@@ -94,8 +508,8 @@ Fill out the following details&lt;/p&gt;
 &lt;/figure&gt;
 &lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id=&#34;add-the-network-to-the-unraid-docker-settings&#34;&gt;Add the network to the Unraid docker settings
-&lt;/h3&gt;&lt;ul&gt;
+&lt;h4 id=&#34;add-the-network-to-the-unraid-docker-settings&#34;&gt;Add the network to the Unraid docker settings
+&lt;/h4&gt;&lt;ul&gt;
 &lt;li&gt;Settings → docker&lt;/li&gt;
 &lt;li&gt;Docker should still be disabled&lt;/li&gt;
 &lt;li&gt;Docker custom network type should be ipvlan&lt;/li&gt;
@@ -114,8 +528,8 @@ Fill out the following details&lt;/p&gt;
     &lt;/figcaption&gt;
 &lt;/figure&gt;
 
-&lt;h3 id=&#34;bring-everything-back-online&#34;&gt;Bring everything back online
-&lt;/h3&gt;&lt;ul&gt;
+&lt;h4 id=&#34;bring-everything-back-online&#34;&gt;Bring everything back online
+&lt;/h4&gt;&lt;ul&gt;
 &lt;li&gt;Re-enable docker
 &lt;ul&gt;
 &lt;li&gt;Settings → Docker&lt;/li&gt;
@@ -135,10 +549,10 @@ Fill out the following details&lt;/p&gt;
         </item>
         <item>
         <title>Tahiti Part 3</title>
-        <link>http://localhost:1313/posts/tahiti2025p3/</link>
+        <link>https://chris-smith.net/posts/tahiti2025p3/</link>
         <pubDate>Sat, 02 Aug 2025 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/posts/tahiti2025p3/</guid>
+        <guid>https://chris-smith.net/posts/tahiti2025p3/</guid>
         <description>&lt;img src="https://cdn.chris-smith.net/tahiti2025/part3/postbanner.jpg" alt="Featured image of post Tahiti Part 3" /&gt;&lt;div class=&#34;timeline&#34;&gt;
 Day 6
   &lt;div class=&#34;timeline-item&#34;&gt;
@@ -211,10 +625,10 @@ Day 7
         </item>
         <item>
         <title>Tahiti Part 2: Proposal</title>
-        <link>http://localhost:1313/posts/tahiti2025p2/</link>
+        <link>https://chris-smith.net/posts/tahiti2025p2/</link>
         <pubDate>Thu, 31 Jul 2025 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/posts/tahiti2025p2/</guid>
+        <guid>https://chris-smith.net/posts/tahiti2025p2/</guid>
         <description>&lt;img src="https://cdn.chris-smith.net/tahiti2025/part2/banner.png" alt="Featured image of post Tahiti Part 2: Proposal" /&gt;&lt;p&gt;Day 5 had arrived and we planned to go out on a waterfall hike.  I&amp;rsquo;d been waiting for the waterfall hike to propose and had already been carrying the ring in my pocket for a couple of days.&lt;/p&gt;
 &lt;p&gt;This trip wasn&amp;rsquo;t just about getting away but it was also about the proposal.  Before we had decided on Tahiti I had originally wanted New Zealand.  Aside from it being gorgeous it&amp;rsquo;s also the place Lord of the Rings was filmed which is Becca&amp;rsquo;s favorite movie series.  That plan feel through and my fallback was going to be the island of Mo&amp;rsquo;orea which was a short ferry ride outside of Tahiti.  Mo&amp;rsquo;orea eventually feel through because we didn&amp;rsquo;t plan to stay there and the ferry times only ran until 2pm.  I&amp;rsquo;d picked out a specific beach and private dinner at a resort but I had no idea just how early things closed down in Tahiti.&lt;/p&gt;
 &lt;p&gt;So the fall back plan was the water fall hike.  We made our way south on the main road and circled the island counter clockwise for about 40 minutes.  Just as we&amp;rsquo;re 5 minutes away from the trail head, we hit a road closure!  The storm from the previous couple of days had caused massive mud slides and had closed down this portion of the road blocking our way!&lt;/p&gt;
@@ -247,10 +661,10 @@ Day 7
         </item>
         <item>
         <title>Tahiti Part 1</title>
-        <link>http://localhost:1313/posts/tahiti2025p1/</link>
+        <link>https://chris-smith.net/posts/tahiti2025p1/</link>
         <pubDate>Sat, 26 Jul 2025 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/posts/tahiti2025p1/</guid>
+        <guid>https://chris-smith.net/posts/tahiti2025p1/</guid>
         <description>&lt;img src="https://cdn.chris-smith.net/tahiti2025/part1/banner.jpg" alt="Featured image of post Tahiti Part 1" /&gt;&lt;div class=&#34;timeline&#34;&gt;
 Day 1
   &lt;div class=&#34;timeline-item&#34;&gt;
@@ -484,10 +898,10 @@ Day 4
         </item>
         <item>
         <title>Hello World!</title>
-        <link>http://localhost:1313/posts/hello-world/</link>
+        <link>https://chris-smith.net/posts/hello-world/</link>
         <pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate>
         
-        <guid>http://localhost:1313/posts/hello-world/</guid>
+        <guid>https://chris-smith.net/posts/hello-world/</guid>
         <description>&lt;p&gt;👋 Hello!  Welcome to my blog / personal website.  If you have already guessed from the URL - which I was pretty lucky to snag (&lt;a class=&#34;link&#34; href=&#34;http://chris-smith.net&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;chris-smith.net&lt;/a&gt;) - I’m Chris.  I created this site to record and share the various projects I might be working on or things that I’m learning.  It’ll help chart my growth in different areas but also be a cool little time machine to look back.  Over the years, I’ve worked on tons of projects that were eventually scrapped — and I regret not saving anything to look back on.  But it’s not all work — this will also be a spot to share travels, games, or movies I’m currently obsessed with.&lt;/p&gt;
 &lt;p&gt;Thank you for dropping by and skimming what I’ve written.  If you’re curious of what cool tech I’m playing with for this site continue reading!&lt;/p&gt;

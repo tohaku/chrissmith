@@ -1,0 +1,9 @@
+{{- $toc := .Page.TableOfContents -}}
+{{- if ge (len $toc) 100 -}}
+<section class="article-toc">
+    <h2>Table of Contents</h2>
+    <div class="widget--toc">
+        {{- $toc | safeHTML -}}
+    </div>
+</section>
+{{- end -}}

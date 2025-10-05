@@ -5,17 +5,19 @@ date = "2025-09-01"
 draft = false
 tags = ["homelab", "docker", "unraid","unifi"]
 categories = ["HomeLab"]
-image="https://cdn.chris-smith.net/homelab/customnetwork/banner.png"
+image="https://cdn.chris-smith.net/homelab/customnetwork/banner2.png"
 +++
-## What is a custom network
+
+
+### What is a custom network
 
 A custom network is a docker network that is bridged to a physical Unraid interface or VLAN interface on the host.  In this use case we’ll be setting up an ipvlan where all containers will have different IPs but share the same host MAC address.  This was done to avoid issues with MacVLANs in older Unraid versions and to keep it consistent with my other custom networks.
 
-## Use case
+### Use case
 
 We’re creating an isolated VLAN for containers that should be extra locked down, like databases.  Only specific services will be granted access to containers on this network using firewall rules and this network will also be blocked from access to the internet.  Since containers are updated on the Unraid host itself and they’re just databases, blocking internet access should have no affect on anything.
 
-## Creating a new VLAN in Unifi
+### Creating a new VLAN in Unifi
 
 Login to your Unifi network by browsing to it’s IP
 
@@ -36,11 +38,11 @@ Fill out the following details
 {{<figure src="https://cdn.chris-smith.net/homelab/customnetwork/autofirewallrules.png" alt="Firewall rules" caption="Firewall rules that were automatically created">}}
 {{<figure src="https://cdn.chris-smith.net/homelab/customnetwork/autofirewallrules2.png" alt="Firewall rules" caption="Firewall rule details blocking access between VLANs">}}
 
-## Creating an ipvlan network in Unraid
+### Creating an ipvlan network in Unraid
 
 I like to use an ipvlan network for Unraid because I can control access via my Unifi network system
 
-### Disable Docker and VM Manager
+#### Disable Docker and VM Manager
 
 - I like to stop all containers and VMs manually first before disabling the services in the Unraid settings.
 - Disable docker
@@ -50,7 +52,7 @@ I like to use an ipvlan network for Unraid because I can control access via my U
     - Settings → VM Manager
     - Enable VMs → set to no → click apply
 
-### Add the VLAN in Unraids network settings
+#### Add the VLAN in Unraids network settings
 
 - Go to network manager and next to enable VLANs make sure it’s marked yes, then click the show button
 - Click ADD VLAN
@@ -63,7 +65,7 @@ I like to use an ipvlan network for Unraid because I can control access via my U
 {{<figure src="https://cdn.chris-smith.net/homelab/customnetwork/unraidnetwork.png" alt="unraid network" caption="Visual of the new VLAN settings in Unraids network settings">}}
 
 
-### Add the network to the Unraid docker settings
+#### Add the network to the Unraid docker settings
 
 - Settings → docker
 - Docker should still be disabled
@@ -76,7 +78,7 @@ I like to use an ipvlan network for Unraid because I can control access via my U
 
 {{<figure src="https://cdn.chris-smith.net/homelab/customnetwork/unraiddockernetwork.png" alt="unraid docker network" caption="Visual of network settings for docker">}}
 
-### Bring everything back online
+#### Bring everything back online
 
 - Re-enable docker
     - Settings → Docker
