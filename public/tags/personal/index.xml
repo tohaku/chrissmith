@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
     <channel>
         <title>Personal on Chris Smith</title>
-        <link>https://chris-smith.net/tags/personal/</link>
+        <link>http://localhost:1313/tags/personal/</link>
         <description>Recent content in Personal on Chris Smith</description>
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
         <copyright>Chris Smith</copyright>
-        <lastBuildDate>Sat, 02 Aug 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://chris-smith.net/tags/personal/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 02 Aug 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/tags/personal/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>Tahiti Part 3</title>
-        <link>https://chris-smith.net/posts/tahiti2025p3/</link>
+        <link>http://localhost:1313/posts/tahiti2025p3/</link>
         <pubDate>Sat, 02 Aug 2025 00:00:00 +0000</pubDate>
         
-        <guid>https://chris-smith.net/posts/tahiti2025p3/</guid>
+        <guid>http://localhost:1313/posts/tahiti2025p3/</guid>
         <description>&lt;img src="https://cdn.chris-smith.net/tahiti2025/part3/postbanner.jpg" alt="Featured image of post Tahiti Part 3" /&gt;&lt;div class=&#34;timeline&#34;&gt;
 Day 6
   &lt;div class=&#34;timeline-item&#34;&gt;
@@ -85,10 +85,10 @@ Day 7
         </item>
         <item>
         <title>Tahiti Part 2: Proposal</title>
-        <link>https://chris-smith.net/posts/tahiti2025p2/</link>
+        <link>http://localhost:1313/posts/tahiti2025p2/</link>
         <pubDate>Thu, 31 Jul 2025 00:00:00 +0000</pubDate>
         
-        <guid>https://chris-smith.net/posts/tahiti2025p2/</guid>
+        <guid>http://localhost:1313/posts/tahiti2025p2/</guid>
         <description>&lt;img src="https://cdn.chris-smith.net/tahiti2025/part2/banner.png" alt="Featured image of post Tahiti Part 2: Proposal" /&gt;&lt;p&gt;Day 5 had arrived and we planned to go out on a waterfall hike.  I&amp;rsquo;d been waiting for the waterfall hike to propose and had already been carrying the ring in my pocket for a couple of days.&lt;/p&gt;
 &lt;p&gt;This trip wasn&amp;rsquo;t just about getting away but it was also about the proposal.  Before we had decided on Tahiti I had originally wanted New Zealand.  Aside from it being gorgeous it&amp;rsquo;s also the place Lord of the Rings was filmed which is Becca&amp;rsquo;s favorite movie series.  That plan feel through and my fallback was going to be the island of Mo&amp;rsquo;orea which was a short ferry ride outside of Tahiti.  Mo&amp;rsquo;orea eventually feel through because we didn&amp;rsquo;t plan to stay there and the ferry times only ran until 2pm.  I&amp;rsquo;d picked out a specific beach and private dinner at a resort but I had no idea just how early things closed down in Tahiti.&lt;/p&gt;
 &lt;p&gt;So the fall back plan was the water fall hike.  We made our way south on the main road and circled the island counter clockwise for about 40 minutes.  Just as we&amp;rsquo;re 5 minutes away from the trail head, we hit a road closure!  The storm from the previous couple of days had caused massive mud slides and had closed down this portion of the road blocking our way!&lt;/p&gt;
@@ -121,10 +121,10 @@ Day 7
         </item>
         <item>
         <title>Tahiti Part 1</title>
-        <link>https://chris-smith.net/posts/tahiti2025p1/</link>
+        <link>http://localhost:1313/posts/tahiti2025p1/</link>
         <pubDate>Sat, 26 Jul 2025 00:00:00 +0000</pubDate>
         
-        <guid>https://chris-smith.net/posts/tahiti2025p1/</guid>
+        <guid>http://localhost:1313/posts/tahiti2025p1/</guid>
         <description>&lt;img src="https://cdn.chris-smith.net/tahiti2025/part1/banner.jpg" alt="Featured image of post Tahiti Part 1" /&gt;&lt;div class=&#34;timeline&#34;&gt;
 Day 1
   &lt;div class=&#34;timeline-item&#34;&gt;
@@ -358,10 +358,10 @@ Day 4
         </item>
         <item>
         <title>Hello World!</title>
-        <link>https://chris-smith.net/posts/hello-world/</link>
+        <link>http://localhost:1313/posts/hello-world/</link>
         <pubDate>Tue, 15 Apr 2025 00:00:00 +0000</pubDate>
         
-        <guid>https://chris-smith.net/posts/hello-world/</guid>
+        <guid>http://localhost:1313/posts/hello-world/</guid>
         <description>&lt;p&gt;👋 Hello!  Welcome to my blog / personal website.  If you have already guessed from the URL - which I was pretty lucky to snag (&lt;a class=&#34;link&#34; href=&#34;http://chris-smith.net&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;chris-smith.net&lt;/a&gt;) - I’m Chris.  I created this site to record and share the various projects I might be working on or things that I’m learning.  It’ll help chart my growth in different areas but also be a cool little time machine to look back.  Over the years, I’ve worked on tons of projects that were eventually scrapped — and I regret not saving anything to look back on.  But it’s not all work — this will also be a spot to share travels, games, or movies I’m currently obsessed with.&lt;/p&gt;
 &lt;p&gt;Thank you for dropping by and skimming what I’ve written.  If you’re curious of what cool tech I’m playing with for this site continue reading!&lt;/p&gt;

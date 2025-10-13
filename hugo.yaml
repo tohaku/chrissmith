@@ -42,10 +42,23 @@ params:
     rssFullContent: true
     favicon: https://cdn.chris-smith.net/isometricAussie.webp
 
-    # seasonal website theme (set variant name, optional sidebar image)
-    #look in assets/scss/
-    themeVariant: 
-    sidebarBgImage:
+    # seasonal website theme (set variant name, optional corner art)
+    # look in assets/scss/
+    themeVariant: autumn
+    seasonalGraphics:
+        #left: https://cdn.chris-smith.net/themes/halloween/leftImage.png
+        #right: https://cdn.chris-smith.net/themes/halloween/rightImage.png
+        left: /seasonal/leftImage.png
+        right: /seasonal/rightImage.png
+        leftWidth: 200px
+        leftHeight: 600px
+        leftOpacity: 0.85
+        leftOffset: 12px
+        rightWidth: 420px
+        rightHeight: 340px
+        rightOpacity: 0.85
+        rightOffset: 2px
+
 
     footer:
         since: 2025

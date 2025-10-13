@@ -17,19 +17,3 @@
   --accent-color-darker: #e47f15;   /* deeper soft orange */
   --accent-color-text: #000000;     /* readable on soft orange */
 }
-
-/* Optional: sidebar background image or gradient */
-.left-sidebar {
-  /* If no image is provided, a subtle theme gradient shows */
-  background: var(--sidebar-bg-image, linear-gradient(180deg, rgba(255,117,24,0.12), rgba(20,16,25,0.12))) center/cover no-repeat;
-}
-
-/* Increase contrast over images/gradients */
-.left-sidebar::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.20), rgba(0, 0, 0, 0.35));
-  pointer-events: none;
-}
-

@@ -17,17 +17,3 @@
   --accent-color-darker: #5aa8cc;
   --accent-color-text: #000;
 }
-
-/* Optional: sidebar background image (place your asset in /static/img/) */
-.left-sidebar {
-  background: var(--sidebar-bg-image, none) center/cover no-repeat;
-}
-
-/* Add a subtle overlay to improve contrast over images */
-.left-sidebar::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.25);
-  pointer-events: none;
-}

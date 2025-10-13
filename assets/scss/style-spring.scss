@@ -16,18 +16,6 @@
   --accent-color-text: #000;
 }
 
-.left-sidebar {
-  background: var(--sidebar-bg-image, none) center/cover no-repeat;
-}
-
-.left-sidebar::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.2);
-  pointer-events: none;
-}
-
 .article-toc {
   margin: 2rem 0;
 

@@ -101,3 +101,48 @@
   }
 }
 
+/* Seasonal corner art (responsive, fixed to viewport corners) */
+:root {
+  --seasonal-corner-image-left-src: none;
+  --seasonal-corner-image-right-src: none;
+  --seasonal-corner-image-left-width: 0px;
+  --seasonal-corner-image-left-height: var(--seasonal-corner-image-left-width);
+  --seasonal-corner-image-right-width: 0px;
+  --seasonal-corner-image-right-height: var(--seasonal-corner-image-right-width);
+  --seasonal-corner-image-left-opacity: 1;
+  --seasonal-corner-image-right-opacity: 1;
+  --seasonal-corner-image-left-offset: 12px;
+  --seasonal-corner-image-right-offset: 12px;
+}
+
+body::before,
+body::after {
+  content: "";
+  position: fixed;
+  bottom: 0;
+  display: block;
+  pointer-events: none;
+  z-index: 5;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center bottom;
+  background-color: transparent;
+}
+
+body::before {
+  left: var(--seasonal-corner-image-left-offset);
+  bottom: var(--seasonal-corner-image-left-offset);
+  width: var(--seasonal-corner-image-left-width);
+  height: var(--seasonal-corner-image-left-height);
+  background-image: var(--seasonal-corner-image-left-src);
+  opacity: var(--seasonal-corner-image-left-opacity);
+}
+
+body::after {
+  right: var(--seasonal-corner-image-right-offset);
+  bottom: var(--seasonal-corner-image-right-offset);
+  width: var(--seasonal-corner-image-right-width);
+  height: var(--seasonal-corner-image-right-height);
+  background-image: var(--seasonal-corner-image-right-src);
+  opacity: var(--seasonal-corner-image-right-opacity);
+}

@@ -1,7 +1,50 @@
-{{/* Optional: set a sidebar background image via config param */}}
-{{ with .Site.Params.sidebarBgImage }}
+{{/* Seasonal corner artwork (bottom-left/right). */}}
+{{ $graphics := default (dict) .Site.Params.seasonalGraphics }}
+{{ $left := default .Site.Params.sidebarBgImage (index $graphics "left") }}
+{{ $left = default $left (index $graphics "leftImage") }}
+{{ $right := default "" (index $graphics "right") }}
+{{ $right = default $right (index $graphics "rightImage") }}
+{{ $leftWidth := default "" (index $graphics "leftWidth") }}
+{{ $leftHeight := default "" (index $graphics "leftHeight") }}
+{{ $leftOpacity := default "" (index $graphics "leftOpacity") }}
+{{ $rightWidth := default "" (index $graphics "rightWidth") }}
+{{ $rightHeight := default "" (index $graphics "rightHeight") }}
+{{ $rightOpacity := default "" (index $graphics "rightOpacity") }}
+{{ $leftOffset := default "" (index $graphics "leftOffset") }}
+{{ $rightOffset := default "" (index $graphics "rightOffset") }}
+{{ if or $left $right }}
 <style>
-:root { --sidebar-bg-image: url('{{ . }}'); }
+:root {
+  {{- with $left }}
+  --seasonal-corner-image-left-src: url('{{ . }}');
+  {{- end }}
+  {{- with $right }}
+  --seasonal-corner-image-right-src: url('{{ . }}');
+  {{- end }}
+  {{- with $leftWidth }}
+  --seasonal-corner-image-left-width: {{ . }};
+  {{- end }}
+  {{- with $leftHeight }}
+  --seasonal-corner-image-left-height: {{ . }};
+  {{- end }}
+  {{- with $leftOpacity }}
+  --seasonal-corner-image-left-opacity: {{ . }};
+  {{- end }}
+  {{- with $leftOffset }}
+  --seasonal-corner-image-left-offset: {{ . }};
+  {{- end }}
+  {{- with $rightWidth }}
+  --seasonal-corner-image-right-width: {{ . }};
+  {{- end }}
+  {{- with $rightHeight }}
+  --seasonal-corner-image-right-height: {{ . }};
+  {{- end }}
+  {{- with $rightOpacity }}
+  --seasonal-corner-image-right-opacity: {{ . }};
+  {{- end }}
+  {{- with $rightOffset }}
+  --seasonal-corner-image-right-offset: {{ . }};
+  {{- end }}
+}
 </style>
 {{ end }}
-

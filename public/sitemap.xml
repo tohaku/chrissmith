@@ -2,79 +2,79 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://chris-smith.net/categories/</loc>
+    <loc>http://localhost:1313/categories/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://chris-smith.net/</loc>
+    <loc>http://localhost:1313/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://chris-smith.net/tags/docker/</loc>
+    <loc>http://localhost:1313/tags/docker/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://chris-smith.net/tags/homelab/</loc>
+    <loc>http://localhost:1313/tags/homelab/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://chris-smith.net/categories/homelab/</loc>
+    <loc>http://localhost:1313/categories/homelab/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://chris-smith.net/tags/oidc/</loc>
+    <loc>http://localhost:1313/tags/oidc/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://chris-smith.net/posts/pocketid/</loc>
+    <loc>http://localhost:1313/posts/pocketid/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://chris-smith.net/posts/</loc>
+    <loc>http://localhost:1313/posts/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://chris-smith.net/tags/</loc>
+    <loc>http://localhost:1313/tags/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://chris-smith.net/tags/unraid/</loc>
+    <loc>http://localhost:1313/tags/unraid/</loc>
     <lastmod>2025-10-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://chris-smith.net/posts/homelab-customnetwork/</loc>
+    <loc>http://localhost:1313/posts/homelab-customnetwork/</loc>
     <lastmod>2025-09-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://chris-smith.net/tags/unifi/</loc>
+    <loc>http://localhost:1313/tags/unifi/</loc>
     <lastmod>2025-09-01T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://chris-smith.net/tags/personal/</loc>
+    <loc>http://localhost:1313/tags/personal/</loc>
     <lastmod>2025-08-02T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://chris-smith.net/tags/tahiti/</loc>
+    <loc>http://localhost:1313/tags/tahiti/</loc>
     <lastmod>2025-08-02T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://chris-smith.net/posts/tahiti2025p3/</loc>
+    <loc>http://localhost:1313/posts/tahiti2025p3/</loc>
     <lastmod>2025-08-02T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://chris-smith.net/tags/travel/</loc>
+    <loc>http://localhost:1313/tags/travel/</loc>
     <lastmod>2025-08-02T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://chris-smith.net/tags/vacation/</loc>
+    <loc>http://localhost:1313/tags/vacation/</loc>
     <lastmod>2025-08-02T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://chris-smith.net/categories/vacation/</loc>
+    <loc>http://localhost:1313/categories/vacation/</loc>
     <lastmod>2025-08-02T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://chris-smith.net/posts/tahiti2025p2/</loc>
+    <loc>http://localhost:1313/posts/tahiti2025p2/</loc>
     <lastmod>2025-07-31T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://chris-smith.net/posts/tahiti2025p1/</loc>
+    <loc>http://localhost:1313/posts/tahiti2025p1/</loc>
     <lastmod>2025-07-26T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://chris-smith.net/tags/cloudflare/</loc>
+    <loc>http://localhost:1313/tags/cloudflare/</loc>
     <lastmod>2025-04-15T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://chris-smith.net/posts/hello-world/</loc>
+    <loc>http://localhost:1313/posts/hello-world/</loc>
     <lastmod>2025-04-15T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://chris-smith.net/tags/hugo/</loc>
+    <loc>http://localhost:1313/tags/hugo/</loc>
     <lastmod>2025-04-15T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://chris-smith.net/tags/idx/</loc>
+    <loc>http://localhost:1313/tags/idx/</loc>
     <lastmod>2025-04-15T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>https://chris-smith.net/categories/personal/</loc>
+    <loc>http://localhost:1313/categories/personal/</loc>
     <lastmod>2025-04-15T00:00:00+00:00</lastmod>
   </url>
 </urlset>
