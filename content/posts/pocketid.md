@@ -178,6 +178,24 @@ location /signup/setup {
         return 404;
     }
 ```
+## Connect to email
+This will allow you to send login codes and login notifications to users.
+
+### Setup Gmail
+1. Make sure you have MFA setup on your account before proceeding.
+2. Back in your MFA settings in Google security center scroll down to app passwords
+3. Set a name for your app, ie PocketID - > click create
+4. Copy that password and save for later
+### Add email to PocketID
+1. Login to Pocket ID and go to Application Configuration
+2. Expand email
+3. Apply these settings
+SMTP Host: smtp.gmail.com
+SMTP Port: 587 or 465 for SSL
+SMTP Username: your email
+SMTP From: your email
+SMTP TLS Option: TLS
+4. Click save and test.  PocketID will send a test email to the one you input.
 
 ## Setup your apps
 
