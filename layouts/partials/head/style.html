@@ -3,7 +3,18 @@
 <link rel="stylesheet" href="{{ $base.RelPermalink }}">
 
 {{/* Optional seasonal override: loads after base */}}
-{{ $variant := default "" .Site.Params.themeVariant }}
+{{ $variantParam := .Site.Params.themeVariant }}
+{{ $variant := "" }}
+{{ if $variantParam }}
+  {{ if reflect.IsMap $variantParam }}
+    {{ $variant = default "" (index $variantParam "active") }}
+    {{ if not $variant }}
+      {{ $variant = default "" (index $variantParam "name") }}
+    {{ end }}
+  {{ else }}
+    {{ $variant = $variantParam }}
+  {{ end }}
+{{ end }}
 {{ if $variant }}
   {{ $override := resources.Get (printf "scss/style-%s.scss" $variant) }}
   {{ if $override }}

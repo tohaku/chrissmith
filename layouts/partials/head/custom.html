@@ -48,3 +48,41 @@
 }
 </style>
 {{ end }}
+
+{{/* Theme-variant-specific background images (light/dark). */}}
+{{ $variantParam := .Site.Params.themeVariant }}
+{{ $variantName := "" }}
+{{ $lightBg := "" }}
+{{ $darkBg := "" }}
+{{ if $variantParam }}
+  {{ if reflect.IsMap $variantParam }}
+    {{ $variantName = default "" (index $variantParam "active") }}
+    {{ if not $variantName }}
+      {{ $variantName = default "" (index $variantParam "name") }}
+    {{ end }}
+    {{ $backgrounds := index $variantParam "backgrounds" }}
+    {{ if and $backgrounds (reflect.IsMap $backgrounds) (ne $variantName "") }}
+      {{ $entry := index $backgrounds $variantName }}
+      {{ if and $entry (reflect.IsMap $entry) }}
+        {{ $lightBg = default "" (index $entry "light") }}
+        {{ $darkBg = default "" (index $entry "dark") }}
+      {{ end }}
+    {{ end }}
+  {{ else }}
+    {{ $variantName = $variantParam }}
+  {{ end }}
+{{ end }}
+<style>
+:root {
+  {{- if $lightBg -}}
+  --theme-switcher-background-light: url('{{ $lightBg }}');
+  {{- else -}}
+  --theme-switcher-background-light: none;
+  {{- end }}
+  {{- if $darkBg -}}
+  --theme-switcher-background-dark: url('{{ $darkBg }}');
+  {{- else -}}
+  --theme-switcher-background-dark: none;
+  {{- end }}
+}
+</style>
