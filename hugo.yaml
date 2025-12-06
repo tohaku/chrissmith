@@ -46,7 +46,7 @@ params:
     # look in assets/scss/
     themeVariant:
         # active SCSS variant in assets/scss/style-*.scss
-        active: autumn
+        active: winter
         # per-variant background images (light/dark) used by theme switcher
         backgrounds:
             autumn:
@@ -215,26 +215,36 @@ params:
 ### See https://stack.jimmycai.com/config/menu
 ### To remove about, archive and search page menu item, remove `menu` field from their FrontMatter
 menu:
-    main: []
-
-    social:
-        - identifier: github
-          name: GitHub
-          url: https://github.com/tohaku
+    main:
+        - name: Home
+          weight: 2
+          url: /
           params:
-              icon: brand-github
-
-        - identifier: twitter
-          name: Twitter
-          url: https://x.com/_tohaku
+              icon: home
+        - name: Homelab
+          weight: 2
+          url: /homelab/
           params:
-              icon: brand-twitter
+              icon: server
 
-        - identifier: tryhackme
-          name: TryHackMe
-          url: https://tryhackme.com/p/tohaku
-          params:
-              icon: brand-thm
+    # social:
+    #     - identifier: github
+    #       name: GitHub
+    #       url: https://github.com/tohaku
+    #       params:
+    #           icon: brand-github
+
+    #     - identifier: twitter
+    #       name: Twitter
+    #       url: https://x.com/_tohaku
+    #       params:
+    #           icon: brand-twitter
+
+    #     - identifier: tryhackme
+    #       name: TryHackMe
+    #       url: https://tryhackme.com/p/tohaku
+    #       params:
+    #           icon: brand-thm
 
 related:
     includeNewer: true

@@ -7,10 +7,10 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
         <copyright>Chris Smith</copyright>
-        <lastBuildDate>Sun, 05 Oct 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Fri, 05 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/categories/index.xml" rel="self" type="application/rss+xml" /><item>
         <title>HomeLab</title>
         <link>http://localhost:1313/categories/homelab/</link>
-        <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
+        <pubDate>Fri, 05 Dec 2025 00:00:00 +0000</pubDate>
         
         <guid>http://localhost:1313/categories/homelab/</guid>
         <description></description>
@@ -21,6 +21,14 @@
         <pubDate>Sat, 02 Aug 2025 00:00:00 +0000</pubDate>
         
         <guid>http://localhost:1313/categories/vacation/</guid>
+        <description></description>
+        </item>
+        <item>
+        <title>Samples</title>
+        <link>http://localhost:1313/categories/samples/</link>
+        <pubDate>Fri, 01 Aug 2025 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/categories/samples/</guid>
         <description></description>
         </item>
         <item>

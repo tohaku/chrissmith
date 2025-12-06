@@ -7,7 +7,158 @@
         <generator>Hugo -- gohugo.io</generator>
         <language>en</language>
         <copyright>Chris Smith</copyright>
-        <lastBuildDate>Sun, 05 Oct 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" /><item>
+        <lastBuildDate>Sat, 06 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" /><item>
+        <title>HomeLab</title>
+        <link>http://localhost:1313/homelab/</link>
+        <pubDate>Sat, 06 Dec 2025 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/homelab/</guid>
+        <description>&lt;p&gt;TBC&lt;/p&gt;
+</description>
+        </item>
+        <item>
+        <title>TailScale Traffic Routing</title>
+        <link>http://localhost:1313/posts/tailscale/</link>
+        <pubDate>Fri, 05 Dec 2025 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/posts/tailscale/</guid>
+        <description>&lt;img src="https://cdn.chris-smith.net/homelab/tailscale/routing/banner.png" alt="Featured image of post TailScale Traffic Routing" /&gt;&lt;pre&gt;&lt;code&gt;                 ┌───────────────────────────┐
+                 │     Tailscale Network     │
+                 │  (your laptop / phone)    │
+                 └──────────────┬────────────┘
+                                │
+                       Encrypted Tailscale
+                                │
+                     DNS resolves subdomain
+                                │
+           fruity.pebbels → 100.x.x.x (NGINX Tailscale IP)
+           sonic.pebbels → 100.x.x.x
+           nugget.pebbels → 100.x.x.x
+                                │
+                                ▼
+                  ┌──────────────────────────┐
+                  │     NGINX Reverse Proxy  │
+                  │   (Tailscale-enabled)    │
+                  │   IP: 100.x.x.x          │
+                  └──────────────┬───────────┘
+                                 │
+    ┌────────────────────────────┼─────────────────────────────┐
+    ▼                            ▼                             ▼
+    Service 1                  Service 2                  Service 3
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&#34;what-is-tailscale&#34;&gt;What is Tailscale
+&lt;/h2&gt;&lt;p&gt;Tailscale is a software that basically creates a virtual LAN between devices no matter where they are in the world.  You could use it to have your own Halo LAN party with friends all over the world or use it to share your self hosted services with friends and family without exposing them to the public internet.&lt;/p&gt;
+&lt;h2 id=&#34;tailscale-setup&#34;&gt;Tailscale setup
+&lt;/h2&gt;&lt;p&gt;This post assumes you&amp;rsquo;ve already setup Tailscale on your devices.  If you have a setup similar to mine Unraid has a plugin and guide that makes setup really easy.&lt;/p&gt;
+&lt;p&gt;Unraid Setup guide: &lt;a class=&#34;link&#34; href=&#34;link&#34; &gt;https://docs.unraid.net/unraid-os/system-administration/secure-your-server/tailscale/?utm_source=google&amp;amp;utm_medium=cpc&amp;amp;utm_campaign=p-max-targeted-us-can&amp;amp;utm_content=&amp;amp;utm_term=&amp;amp;gad_source=1&amp;amp;gad_campaignid=21440886943&amp;amp;gbraid=0AAAAAC26wCIJdzZTNqIwpiXcILb9L2B8F&amp;amp;gclid=Cj0KCQiA_8TJBhDNARIsAPX5qxQ_G4SDhF1F3kffSiwJrQk8zHZJlXqZWEr3oEEzbu7wHXcf6ZAhDw0aAh2MEALw_wcB&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;so-what-is-this-post-about&#34;&gt;So what is this post about?
+&lt;/h2&gt;&lt;p&gt;There are some services I don&amp;rsquo;t want to expose directly to the internet but I&amp;rsquo;d like to still be able to access them while travelling.  Unraid makes it possible to expose each of your services directly to Tailscale but that&amp;rsquo;s too insecure.&lt;/p&gt;
+&lt;p&gt;My home network is already segmented with multiple VLANs with an NGINX container being the only service permitted on the firewall that I can use to access everything.  I can do the same thing with Tailscale where only NGINX is exposed and will route all of my traffic.&lt;/p&gt;
+&lt;h2 id=&#34;setup&#34;&gt;Setup
+&lt;/h2&gt;&lt;h3 id=&#34;first-step---enable-tailscale-on-the-nginx-container&#34;&gt;First step - Enable Tailscale on the NGINX container
+&lt;/h3&gt;&lt;p&gt;For my NGINX container I use the one from LinuxServer.io (lscr.io/linuxserver/nginx).  The template contains an option to enable Tailscale. It doesn&amp;rsquo;t need anything special other than specifying the name that&amp;rsquo;ll appear in the Tailscale admin panel.&lt;/p&gt;
+&lt;h3 id=&#34;second-step---configure-tailscale&#34;&gt;Second step - Configure Tailscale
+&lt;/h3&gt;&lt;p&gt;In this portion we&amp;rsquo;re going to modify some settings in the Tailscale admin panel.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Enable Magic DNS
+&lt;ul&gt;
+&lt;li&gt;Go to the DNS tab &lt;a class=&#34;link&#34; href=&#34;link&#34; &gt;https://login.tailscale.com/admin/dns&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Scroll towards the bottom and click the button to enable Magic DNS&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Specify your name server
+&lt;ul&gt;
+&lt;li&gt;On the same DNS page as step 2, specify your DNS server under the Nameservers section.  You can use something like PiHole here, I use my router that supports custom DNS.&lt;/li&gt;
+&lt;li&gt;You&amp;rsquo;ll also need to provide a domain name while specifying the IP. If you&amp;rsquo;re using a URL like fruity.pebbels , pebbels would be the name to specify.  Then all of your URLS will need to end in .pebbels.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;third-step---configure-dns&#34;&gt;Third step - Configure DNS
+&lt;/h3&gt;&lt;p&gt;For my setup I use my Unifi Dream Machine Pro router as my DNS server and it supports custom DNS. If your router doesn&amp;rsquo;t support custom DNS you can use something like PiHole.&lt;/p&gt;
+&lt;p&gt;For the Unifi Dream Machine, you can do this by creating new policies and select DNS as the type.  Then create one for each of the services you want to access and specify the IP of your NGINX container that&amp;rsquo;s on Tailscale.&lt;/p&gt;
+&lt;h3 id=&#34;fourth-step---configure-nginx&#34;&gt;Fourth step - Configure NGINX
+&lt;/h3&gt;&lt;p&gt;You&amp;rsquo;ll need to create a config file for each of your services.  LinuxServer.io provides a lot of example templates but here is a basic example of one of my config files.  NGINX will have to be restarted after the changes.&lt;/p&gt;
+&lt;p&gt;fruity.pebbels.conf&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt; 1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 5
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 6
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 7
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 8
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt; 9
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;10
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;11
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;12
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;13
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;14
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;15
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;16
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;17
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;18
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;19
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;20
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;21
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;22
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;23
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;24
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;25
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;26
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;27
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;28
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-nginx&#34; data-lang=&#34;nginx&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;k&#34;&gt;server&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kn&#34;&gt;listen&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;80&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kn&#34;&gt;listen&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;[::]:80&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kn&#34;&gt;server_name&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;fruity.pebbels&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kn&#34;&gt;client_max_body_size&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kn&#34;&gt;location&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;/&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;kn&#34;&gt;include&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;/config/nginx/proxy.conf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;kn&#34;&gt;include&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;/config/nginx/resolver.conf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;kn&#34;&gt;set&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$upstream_app&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;192&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;.168.50.13&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;kn&#34;&gt;set&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$upstream_port&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;8989&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;kn&#34;&gt;set&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$upstream_proto&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;http&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;kn&#34;&gt;proxy_pass&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$upstream_proto://$upstream_app:$upstream_port&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;kn&#34;&gt;location&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;~&lt;/span&gt; &lt;span class=&#34;sr&#34;&gt;(/sonarr)?/api&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;kn&#34;&gt;include&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;/config/nginx/proxy.conf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;kn&#34;&gt;include&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;/config/nginx/resolver.conf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;kn&#34;&gt;set&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$upstream_app&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;192&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;.168.50.13&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;kn&#34;&gt;set&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$upstream_port&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;8989&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;kn&#34;&gt;set&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$upstream_proto&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;http&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;        &lt;span class=&#34;kn&#34;&gt;proxy_pass&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$upstream_proto://$upstream_app:$upstream_port&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h3 id=&#34;configure-access-controls&#34;&gt;Configure Access Controls
+&lt;/h3&gt;&lt;p&gt;You&amp;rsquo;ll want to make sure that not just anyone connected to your Tailscale network can access your services.  You can configure access controls to limit who can access what.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;Go to the Access Controls page &lt;a class=&#34;link&#34; href=&#34;link&#34; &gt;https://login.tailscale.com/admin/acls/visual/general-access-rules&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Under the groups tab create a group for the users you want to give access and add the users.  I just called my group NGINX so it&amp;rsquo;s easy to understand what it&amp;rsquo;s for.&lt;/li&gt;
+&lt;li&gt;Go to the hosts tab and create a host for your NGINX container using the IP address of your NGNINX host listed on the machines page.&lt;/li&gt;
+&lt;li&gt;Go to the general access rules tab
+&lt;ul&gt;
+&lt;li&gt;Make sure you don&amp;rsquo;t already have a rule that gives access to all users.  I had one by default that I limited to only my account.&lt;/li&gt;
+&lt;li&gt;Create a new rule allowing access for only your NGINX group to the NGINX host.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id=&#34;success&#34;&gt;Success!!
+&lt;/h3&gt;&lt;p&gt;You should be all set. You can test by connecting to Tailscale on your device and accessing your custom URL like fruity.pebbels .&lt;/p&gt;
+</description>
+        </item>
+        <item>
         <title>OIDC - PocketID</title>
         <link>http://localhost:1313/posts/pocketid/</link>
         <pubDate>Sun, 05 Oct 2025 00:00:00 +0000</pubDate>
@@ -637,6 +788,56 @@ Day 7
   &lt;div class=&#34;timeline-col timeline-media&#34;&gt;&lt;figure&gt;
         &lt;img src=&#34;https://cdn.chris-smith.net/tahiti2025/part3/leaving2.jpg&#34; alt=&#34;&#34; loading=&#34;lazy&#34; /&gt;&lt;figcaption&gt;Boarding our plane&lt;/figcaption&gt;&lt;/figure&gt;&lt;/div&gt;
 &lt;/div&gt;
+
+
+&lt;/div&gt;
+
+
+</description>
+        </item>
+        <item>
+        <title>Sample: Timeline Post</title>
+        <link>http://localhost:1313/posts/timeline-sample/</link>
+        <pubDate>Fri, 01 Aug 2025 00:00:00 +0000</pubDate>
+        
+        <guid>http://localhost:1313/posts/timeline-sample/</guid>
+        <description>&lt;p&gt;This sample shows how to use the timeline shortcodes to pair a short blurb on the left with an image on the right.&lt;/p&gt;
+&lt;div class=&#34;timeline&#34;&gt;
+
+  &lt;div class=&#34;timeline-item&#34;&gt;
+  &lt;div class=&#34;timeline-col timeline-text&#34;&gt;&lt;h3 class=&#34;timeline-title&#34;&gt;Arrival&lt;/h3&gt;&lt;div class=&#34;timeline-body&#34;&gt;We arrived just before sunset and checked into our stay. The air was warm and the sky was glowing.&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&#34;timeline-col timeline-media&#34;&gt;&lt;figure&gt;
+        &lt;img src=&#34;https://picsum.photos/id/1015/960/600&#34; alt=&#34;Arrival&#34; loading=&#34;lazy&#34; /&gt;&lt;figcaption&gt;Landing at golden hour&lt;/figcaption&gt;&lt;/figure&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+
+
+  &lt;div class=&#34;timeline-item&#34;&gt;
+  &lt;div class=&#34;timeline-col timeline-text&#34;&gt;&lt;h3 class=&#34;timeline-title&#34;&gt;First Morning&lt;/h3&gt;&lt;div class=&#34;timeline-body&#34;&gt;Slow morning, fresh coffee, and a short walk to explore the neighborhood before planning the day.&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&#34;timeline-col timeline-media&#34;&gt;&lt;figure&gt;
+        &lt;img src=&#34;https://picsum.photos/id/1025/960/600&#34; alt=&#34;First Morning&#34; loading=&#34;lazy&#34; /&gt;&lt;figcaption&gt;Coffee with a view&lt;/figcaption&gt;&lt;/figure&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+
+
+  &lt;div class=&#34;timeline-item&#34;&gt;
+  &lt;div class=&#34;timeline-col timeline-text&#34;&gt;&lt;h3 class=&#34;timeline-title&#34;&gt;Afternoon Adventure&lt;/h3&gt;&lt;div class=&#34;timeline-body&#34;&gt;We followed a coastal trail, stopping for photos and a quick snack while the waves crashed below.&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&#34;timeline-col timeline-media&#34;&gt;&lt;figure&gt;
+        &lt;img src=&#34;https://picsum.photos/id/1003/960/600&#34; alt=&#34;Afternoon Adventure&#34; loading=&#34;lazy&#34; /&gt;&lt;figcaption&gt;Trail along the coast&lt;/figcaption&gt;&lt;/figure&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+
+
+  &lt;div class=&#34;timeline-item&#34;&gt;
+  &lt;div class=&#34;timeline-col timeline-text&#34;&gt;&lt;h3 class=&#34;timeline-title&#34;&gt;Dinner&lt;/h3&gt;&lt;div class=&#34;timeline-body&#34;&gt;Wrapped up with dinner at a small spot we found on the way back—simple, fresh, and delicious.&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div class=&#34;timeline-col timeline-media&#34;&gt;&lt;figure&gt;
+        &lt;img src=&#34;https://picsum.photos/id/1035/960/600&#34; alt=&#34;Dinner&#34; loading=&#34;lazy&#34; /&gt;&lt;figcaption&gt;Local flavors&lt;/figcaption&gt;&lt;/figure&gt;&lt;/div&gt;
+&lt;/div&gt;
+
 
 
 &lt;/div&gt;
