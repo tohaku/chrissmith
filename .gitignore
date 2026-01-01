@@ -15,3 +15,8 @@ node_modules/
 
 # VS Code settings specific to this workspace (optional)
 .vscode/
+frontmatter.json
+.frontmatter/database/pinnedItemsDb.json
+.frontmatter/database/taxonomyDb.json
+public/index.xml
+public/sitemap.xml
