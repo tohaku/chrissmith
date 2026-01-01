@@ -8,12 +8,45 @@
         <language>en</language>
         <copyright>Chris Smith</copyright>
         <lastBuildDate>Sat, 06 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="http://localhost:1313/index.xml" rel="self" type="application/rss+xml" /><item>
-        <title>HomeLab</title>
+        <title>HomeLab Guides</title>
         <link>http://localhost:1313/homelab/</link>
         <pubDate>Sat, 06 Dec 2025 00:00:00 +0000</pubDate>
         
         <guid>http://localhost:1313/homelab/</guid>
-        <description>&lt;p&gt;TBC&lt;/p&gt;
+        <description>&lt;img src=&#34;https://cdn.chris-smith.net/homelab/guidesImage.png&#34; alt=&#34;HomeLab diagram&#34; style=&#34;float:right; margin:0 0 1rem 1rem; width:260px;&#34;&gt;
+&lt;h2 id=&#34;description&#34;&gt;Description
+&lt;/h2&gt;&lt;p&gt;Most of my guides are based around Unraid using templates provided by the community.  If you&amp;rsquo;re not using Unraid they&amp;rsquo;ll still work for you but you&amp;rsquo;ll need to figure out your initial docker setup command.&lt;/p&gt;
+&lt;p&gt;A lot of the guides are still in progress as I go back through what I&amp;rsquo;ve setup already.&lt;/p&gt;
+&lt;h2 id=&#34;topics&#34;&gt;Topics
+&lt;/h2&gt;&lt;h3 id=&#34;website&#34;&gt;Website
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Hosting a website using Hugo &amp;amp; Cloudflare&lt;/li&gt;
+&lt;li&gt;Free website image hosting with Cloudflare&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;networking&#34;&gt;Networking
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;Custom networking&lt;/li&gt;
+&lt;li&gt;NGINX&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;tunneling&#34;&gt;Tunneling
+&lt;/h3&gt;&lt;p&gt;Forget port forwarding, these guides will help you access your services remotely.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Cloudflare tunneling&lt;/li&gt;
+&lt;li&gt;Tailscale&lt;/li&gt;
+&lt;li&gt;PlayIt.GG (invite your friends to play on your self hosted private servers)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&#34;security&#34;&gt;Security
+&lt;/h3&gt;&lt;ul&gt;
+&lt;li&gt;PocketID (OIDC - One login for all of your services using passkeys)&lt;/li&gt;
+&lt;li&gt;CrowdSec (Crowdsourced IP blacklists - securing your tunnels)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;cool-apps-to-checkout&#34;&gt;Cool apps to checkout
+&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;Nextcloud: host your own Google cloud&lt;/li&gt;
+&lt;li&gt;Plex: Stream your own movies anywhere&lt;/li&gt;
+&lt;li&gt;Booklore: Your own ebook server.  I tend to get a lot of DRM free books from HumbleBundle&lt;/li&gt;
+&lt;li&gt;Romm: Play your romms anywhere in your browser.&lt;/li&gt;
+&lt;/ul&gt;
 </description>
         </item>
         <item>
