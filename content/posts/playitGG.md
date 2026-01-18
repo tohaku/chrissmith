@@ -18,3 +18,22 @@ This is where PlayIt.gg comes in.  It's a tunneling service that exposes your se
 
 ## Alert! Recent changes to the free plan
 
+notes
+https://www.reddit.com/r/selfhosted/comments/1q4cm1a/thoughts_on_using_oracle_cloud_free_tier_as_a/
+
+## Setting up a custom domain
+
+Note: requires a premium playit.GG account that costs $3 a month or $30 a year.
+
+- After subscribing to PlayIt.GG , go to Settings -> Domains
+- You'll be provided two DNS records that you'll need to put into your name server, in my case that's Cloudflare.
+- Applying the DNS records
+    - login into Cloudflare
+    - Click your domain name -> DNS -> Records
+    - Create two new DNS records, one for each nameserver provided by playit.GG.  Subdomain is the same for both.
+        - Type: NS
+        - Name: chosen subdomain
+        - Nameserver: Name server provided by playit.GG
+        - TTL: left on Auto
+- Back in Playit.GG, enter the subdomain you set in Cloudflare, ie playit.mydomain.com
+- Chose your tunnel in the dropdown and apply it.

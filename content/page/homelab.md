@@ -30,7 +30,9 @@ A lot of the guides are still in progress as I go back through what I've setup a
 
 Forget port forwarding, these guides will help you access your services remotely.
 
-- Cloudflare tunneling
+- Cloudflare
+    - Cloudflare Tunnel Setup
+    - Firewall rules
 - Tailscale
 - PlayIt.GG (invite your friends to play on your self hosted private servers)
 
