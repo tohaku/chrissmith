@@ -29,8 +29,39 @@
 
 &lt;p&gt;When the installation is complete, it&amp;rsquo;ll provide a username and password for the web UI running on port 443. I like to setup custom domains for my services so I&amp;rsquo;ll create a static DNS entry for this address as &lt;a class=&#34;link&#34; href=&#34;https://wazuh.internal&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://wazuh.internal&lt;/a&gt;.&lt;/p&gt;
-&lt;h2 id=&#34;configuring&#34;&gt;Configuring
-&lt;/h2&gt;&lt;h2 id=&#34;troubleshooting&#34;&gt;Troubleshooting
+&lt;h3 id=&#34;post-setup&#34;&gt;Post Setup
+&lt;/h3&gt;&lt;p&gt;Upon logging into Wazuh&amp;rsquo;s dashboard you&amp;rsquo;ll already see some alerts that Wazuh is pulling from it&amp;rsquo;s own logs.  But before I start playing around with it I&lt;/p&gt;
+&lt;h2 id=&#34;user-agent-setup&#34;&gt;User Agent Setup
+&lt;/h2&gt;&lt;p&gt;What is the user agent?&lt;/p&gt;
+&lt;p&gt;From the Wazuh home screen click the blue deploy agent button.  This will take you to a screen where you can start filling out the different agent options like OS version, server address (IP or FQDN), agent name as it&amp;rsquo;ll appear in the console, and device group.&lt;/p&gt;
+&lt;p&gt;One issue I ran into was Wazuh didn&amp;rsquo;t like my naming scheme for internal FQDN&amp;rsquo;s.  It gave an error saying that my FQDN was invalid.  So I used the Wazuh servers IP address.&lt;/p&gt;
+&lt;p&gt;After filling out the details you&amp;rsquo;ll be provided with two commands to get the agent installed on the host. One command is to download the agent with curl and another to run the agent specific to the OS you selected. In this case it was MacOS.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div class=&#34;chroma&#34;&gt;
+&lt;table class=&#34;lntable&#34;&gt;&lt;tr&gt;&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code&gt;&lt;span class=&#34;lnt&#34;&gt;1
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;2
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;3
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;4
+&lt;/span&gt;&lt;span class=&#34;lnt&#34;&gt;5
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td class=&#34;lntd&#34;&gt;
+&lt;pre tabindex=&#34;0&#34; class=&#34;chroma&#34;&gt;&lt;code class=&#34;language-shell&#34; data-lang=&#34;shell&#34;&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#example curl command&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;curl -so wazuh-agent.pkg https://packages.wazuh.com/4.x/macos/wazuh-agent-4.14.1-1.arm64.pkg &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;#34;WAZUH_MANAGER=&amp;#39;10.0.0.4&amp;#39; &amp;amp;&amp;amp; WAZUH_AGENT_NAME=&amp;#39;MyComputer&amp;#39;&amp;#34;&lt;/span&gt; &amp;gt; /tmp/wazuh_envs &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; sudo installer -pkg ./wazuh-agent.pkg -target /
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;&lt;span class=&#34;c1&#34;&gt;#example command to run the agent on MacOS&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span class=&#34;line&#34;&gt;&lt;span class=&#34;cl&#34;&gt;sudo launchctl load /Library/LaunchDaemons/com.wazuh.agent.plist
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;h2 id=&#34;integrations&#34;&gt;Integrations
+&lt;/h2&gt;&lt;h3 id=&#34;unifi-network&#34;&gt;Unifi Network
+&lt;/h3&gt;&lt;p&gt;Unifi has a setting to send it&amp;rsquo;s logs to SIEM servers such as Splunk and Wazuh. This can be found under settings -&amp;gt; Control Plane -&amp;gt; Integrations tab
+&lt;figure&gt;&lt;img src=&#34;https://cdn.chris-smith.net/homelab/wazuh/unifisettings.png&#34;
+    alt=&#34;unifi settings&#34;&gt;&lt;figcaption&gt;
+      &lt;p&gt;Unifi SIEM settings&lt;/p&gt;
+    &lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;/p&gt;
+&lt;h2 id=&#34;troubleshooting&#34;&gt;Troubleshooting
 &lt;/h2&gt;</description>
         </item>
         <item>
@@ -122,6 +153,28 @@
 &lt;/h2&gt;&lt;p&gt;notes
 &lt;a class=&#34;link&#34; href=&#34;https://www.reddit.com/r/selfhosted/comments/1q4cm1a/thoughts_on_using_oracle_cloud_free_tier_as_a/&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
     &gt;https://www.reddit.com/r/selfhosted/comments/1q4cm1a/thoughts_on_using_oracle_cloud_free_tier_as_a/&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;setting-up-a-custom-domain&#34;&gt;Setting up a custom domain
+&lt;/h2&gt;&lt;p&gt;Note: requires a premium playit.GG account that costs $3 a month or $30 a year.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;After subscribing to PlayIt.GG , go to Settings -&amp;gt; Domains&lt;/li&gt;
+&lt;li&gt;You&amp;rsquo;ll be provided two DNS records that you&amp;rsquo;ll need to put into your name server, in my case that&amp;rsquo;s Cloudflare.&lt;/li&gt;
+&lt;li&gt;Applying the DNS records
+&lt;ul&gt;
+&lt;li&gt;login into Cloudflare&lt;/li&gt;
+&lt;li&gt;Click your domain name -&amp;gt; DNS -&amp;gt; Records&lt;/li&gt;
+&lt;li&gt;Create two new DNS records, one for each nameserver provided by playit.GG.  Subdomain is the same for both.
+&lt;ul&gt;
+&lt;li&gt;Type: NS&lt;/li&gt;
+&lt;li&gt;Name: chosen subdomain&lt;/li&gt;
+&lt;li&gt;Nameserver: Name server provided by playit.GG&lt;/li&gt;
+&lt;li&gt;TTL: left on Auto&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;Back in Playit.GG, enter the subdomain you set in Cloudflare, ie playit.mydomain.com&lt;/li&gt;
+&lt;li&gt;Chose your tunnel in the dropdown and apply it.&lt;/li&gt;
+&lt;/ul&gt;
 </description>
         </item>
         <item>
@@ -272,31 +325,36 @@
         <pubDate>Sat, 29 Nov 2025 00:00:00 +0000</pubDate>
         
         <guid>http://localhost:1313/posts/married/</guid>
-        <description>&lt;img src="https://cdn.chris-smith.net/homelab/customnetwork/banner2.png" alt="Featured image of post Getting Hitched!" /&gt;&lt;p&gt;Timeline:
-Friday
-Drove up friday after thanksgiving
-swung by my dads for thanksgiving breakfast
-had spent thanksgiving at my moms
-parked at beach, walked up for food
-cafe azule for food
-back to beach
-desolation hotel
-tree lighting
-target
-alcohol and jaccuzi&lt;/p&gt;
-&lt;p&gt;Saturday
-Ceasars Casina to get a cinnabun
-hike
-back to hotel, then beach for sunset
-marriage dinner&lt;/p&gt;
-&lt;p&gt;Sunday
-Sick, more relaxed
-explored the shops settled on blue dog pizza
-art gallery
-late swim (5pm)
-cafe azule
-train dreams movie&lt;/p&gt;
-&lt;p&gt;My wife and I met online and officially became a couple on Nov 29, 2021.  Now 4 years later, Nov 29, 2025, we officially became husband and wife.  We&lt;/p&gt;
+        <description>&lt;img src="https://cdn.chris-smith.net/homelab/customnetwork/banner2.png" alt="Featured image of post Getting Hitched!" /&gt;&lt;p&gt;This weekend marked four years since I’ve been with my partner, and it’s also the date we officially became husband and wife. We kept it simple: a quiet getaway to South Lake Tahoe with just the two of us.&lt;/p&gt;
+&lt;p&gt;We didn&amp;rsquo;t need someone to officianate our marriage; Becca had found online that California has a newer license that only requires witness&amp;rsquo;s to sign it. This license is meant to be more flexible for all kinds of religions and it really frees people up to celebrate how they want to.  It&amp;rsquo;s so new that when we both picked up the license and dropped it off, the clerk had to check with their boss that the paper work was ok because they hadn&amp;rsquo;t seen it before.&lt;/p&gt;
+&lt;h3 id=&#34;friday-thanksgiving-breakfast-tahoe-arrival-and-a-tree-lighting-surprise&#34;&gt;Friday: Thanksgiving breakfast, Tahoe arrival, and a tree lighting surprise
+&lt;/h3&gt;&lt;p&gt;We drove up the Friday after Thanksgiving and swung by my dad’s for Thanksgiving breakfast. We had spent Thanksgiving itself with other sides of our family, so it was a nice way to still see everyone before heading out.&lt;/p&gt;
+&lt;p&gt;We reached Tahoe around noon and had a couple of hours to kill before check-in, so we grabbed lunch at one of my favorite spots, Cafe Azule. They have Thai curry tacos that I have to get whenever I’m in Tahoe.&lt;/p&gt;
+&lt;img src=&#34;https://cdn.chris-smith.net/married/desolation1.png&#34; alt=&#34;Tahoe Tree Lighting&#34;&gt;
+&lt;img src=&#34;https://cdn.chris-smith.net/married/desolation2.png&#34; alt=&#34;Tahoe Tree Lighting&#34;&gt;
+&lt;p&gt;After lunch we checked into the Desolation Hotel. Out of all our trips, this has been one of our favorite places to stay. We booked their townhome-style room, which ended up being a three-story mini-adventure all by itself. The first floor had a garage with an EV charger and storage. The second floor had the kitchen, living room, and a balcony. The third floor had the bedroom and master bathroom, plus a jacuzzi inside and a tub outside on the balcony. Every level had a fireplace you could enjoy from inside or from the balcony that we had going whenever we were there.&lt;/p&gt;
+&lt;img src=&#34;https://cdn.chris-smith.net/married/treelighting.png&#34; alt=&#34;Tahoe Tree Lighting&#34;&gt;
+&lt;p&gt;Later that night we headed back out to Lake Tahoe Boulevard where all the shops are, and we accidentally stumbled into the Christmas tree lighting South Lake Tahoe was hosting that weekend. We got there right before the crowds started showing up so we had the perfect spot next to the tree.&lt;/p&gt;
+&lt;img src=&#34;https://cdn.chris-smith.net/married/santafiretruck.png&#34; alt=&#34;Santa&#34; style=&#34;float:right; margin:0 0 1rem 1rem; width:260px;&#34;&gt;
+&lt;p&gt;We were also next to the street and ended up next to a firetruck rolled in with Santa and Mrs. Claus, and one of the firefighters went up the ladder to light the tree to a burst of fireworks.&lt;/p&gt;
+&lt;p&gt;After the tree lighting we grabbed snacks and alcohol from the nearby Target and ended the night in the jacuzzi.&lt;/p&gt;
+&lt;h3 id=&#34;saturday-cinnabon-a-hike-and-our-celebration-dinner&#34;&gt;Saturday: Cinnabon, a hike, and our celebration dinner
+&lt;/h3&gt;&lt;p&gt;Saturday started with Cinnabon for me and Starbucks to keep things moving. Then we headed to a trail that starts behind the South Lake Tahoe theater and follows the Heavenly gondolas up the mountain.&lt;/p&gt;
+&lt;img src=&#34;https://cdn.chris-smith.net/married/hikingsign.png&#34; alt=&#34;Night swim&#34;&gt;
+&lt;p&gt;A couple of miles in, there’s a rock where you can get a great view over South Lake Tahoe, and if you keep going you’ll eventually hit a waterfall. We’d hiked the trail in the past, but this was the first time we actually made it all the way to the waterfall.&lt;/p&gt;
+&lt;img src=&#34;https://cdn.chris-smith.net/married/hikingview.png&#34; alt=&#34;Hiking View&#34; style=&#34;float:right; margin:0 0 1rem 1rem; width:260px;&#34;&gt;
+&lt;p&gt;On the way back, I started feeling pretty crummy. Becca pinpointed my symptoms as altitude sickness, which I didn’t even realize I could get. It probably didn’t help that the night before included alcohol and cooking ourselves out in the jaccuzi.&lt;/p&gt;
+&lt;p&gt;For our celebration dinner, we went down to the lake and ate at Jimmy’s at The Landing Resort &amp;amp; Spa. We ordered the Chilean sea bass, a lamb burger, and Hokkaido milk bread as an appetizer.&lt;/p&gt;
+&lt;img src=&#34;https://cdn.chris-smith.net/married/dinner.jpg&#34; alt=&#34;dinner&#34;&gt;
+&lt;p&gt;It was hilarious when the food came out. Becca got a full plate with a massive burger and sides followed by my plate with a small sliver of sea bass and potatoes where the food barely filled half the plate. The shock must have been written all over my face because the waiter immediately asked if everything was okay. Becca later confirmed I had a wtf look on my face when the food came out. Despite it looking like a small amount of food, it was still filling and tasted amazing.&lt;/p&gt;
+&lt;h3 id=&#34;sunday-a-slow-day-blue-dog-pizza-and-a-chilly-pool-mission&#34;&gt;Sunday: A slow day, Blue Dog Pizza, and a chilly pool mission
+&lt;/h3&gt;&lt;p&gt;By Sunday we were exhausted, and I still wasn’t feeling ok, so we leaned into a lazy day. We spent most of it in the room, only heading out when it was time to hunt down food.&lt;/p&gt;
+&lt;img src=&#34;https://cdn.chris-smith.net/married/traindreams.png&#34; alt=&#34;Dinner &amp; Movie&#34; style=&#34;float:left; margin:0 0 1rem 1rem; width:260px;&#34;&gt;
+&lt;p&gt;For lunch we grabbed Blue Dog Pizza, and later we brought Cafe Azule back to the hotel for dinner. We ate and watched &lt;a class=&#34;link&#34; href=&#34;https://en.wikipedia.org/wiki/Train_Dreams_%28film%29&#34;  target=&#34;_blank&#34; rel=&#34;noopener&#34;
+    &gt;Train Dreams&lt;/a&gt;, a film about the life of a logger in 1917. It had never been on my radar, but we ended up loving it. It’s slower, but it holds your attention the whole time and feels like a really vivid window into that time period.&lt;/p&gt;
+&lt;p&gt;After the movie, despite the freezing temperatures, we layered up to head outside to the pool.Becca had been wanting to use the pool at least once that weekend so it was our last chance to get that in. I wasn’t ready to deal with the cold, so I stayed bundled up poolside and played a few rounds of Hearthstone while Becca braved the cold air in her swimsuit.&lt;/p&gt;
+&lt;img src=&#34;https://cdn.chris-smith.net/married/swimmingbundled.png&#34; alt=&#34;Night swim&#34;&gt;
+&lt;p&gt;We packed up before bed and headed out first thing Monday morning.  It was a short trip but it was a nice romantic getaway.&lt;/p&gt;
 </description>
         </item>
         <item>
