@@ -179,7 +179,6 @@ Your friends will probably need to do the same to also connect to the server.
 If you've subscribed to PlayIt.GG it lets you use your own domain name instead of the random one they provide.  The IP address will still be random but they also offer a static IP at an additional price.  For me I've had plenty of luck with using the domain name and haven't needed to pay for the static IP.
 
 <img src="https://cdn.chris-smith.net/homelab/playitgg/addExternalDomain.png" alt="playit.gg post">
-</div>
 
 Setup Steps:
 - In PlayIt.GG go to Settings -> Domains
@@ -199,4 +198,3 @@ Setup Steps:
 Now when you view your tunnel settings you'll see your domain name with a port number (ie mydomain.fiddlesticks.com:24220) that you and your friends can use to connect to the server.
 
 <img src="https://cdn.chris-smith.net/homelab/playitgg/playit_obfuscated.png" alt="playit.gg post">
-</div>
