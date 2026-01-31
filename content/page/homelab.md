@@ -12,7 +12,7 @@ description = "Guides on how to build a home lab"
 
 Most of my guides are based around Unraid using templates provided by the community.  If you're not using Unraid they'll still work for you but you'll need to figure out your initial docker setup command.
 
-A lot of the guides are still in progress as I go back through what I've setup already.
+A lot of these guides are still in progress.
 
 ## Topics
 
@@ -23,7 +23,8 @@ A lot of the guides are still in progress as I go back through what I've setup a
 
 ### Networking
 
-- Custom networking
+- [Custom docker network](https://chris-smith.net/posts/homelab-customnetwork/)
+Create a VLAN that can be used for your docker containers.
 - NGINX
 
 ### Tunneling
@@ -33,14 +34,15 @@ Forget port forwarding, these guides will help you access your services remotely
 - Cloudflare
     - Cloudflare Tunnel Setup
     - Firewall rules
-- Tailscale
-- PlayIt.GG (invite your friends to play on your self hosted private servers)
+- [Tailscale](https://chris-smith.net/posts/tailscale/)
+Create a private virtual network between your devices and friends devices.
+- [PlayIt.GG](https://chris-smith.net/posts/playitgg/)
+share game servers with friends
 
 ### Security
 
-- PocketID (OIDC - One login for all of your services using passkeys)
+- [PocketID](https://chris-smith.net/posts/pocketid/) OIDC - One login for all of your services using passkeys
 - CrowdSec (Crowdsourced IP blacklists - securing your tunnels)
-
 
 ## Cool apps to checkout
 
