@@ -199,6 +199,12 @@ SMTP TLS Option: TLS
 
 ## Setup your apps
 
+### Before you start
+
+Visit yourpocketIDaddress.com/.well-known/openid-configuration
+
+This page contains all of the information you'll need to integrate PocketID with your services.
+
 ### Romm
 
 Romm documentation: [https://docs.romm.app/3.8.3/OIDC-Guides/OIDC-Setup-With-PocketID/](https://docs.romm.app/3.8.3/OIDC-Guides/OIDC-Setup-With-PocketID/)
