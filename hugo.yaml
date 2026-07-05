@@ -15,7 +15,6 @@ hasCJKLanguage: false
 
 languages:
     en:
-        label: English
         title: Chris Smith
         weight: 1
         params: {}
