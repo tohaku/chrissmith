@@ -1,5 +1,5 @@
 baseurl: https://chris-smith.net/
-languageCode: en-us
+locale: en-us
 theme: hugo-theme-stack
 title: Chris Smith
 copyright: Chris Smith
@@ -15,7 +15,7 @@ hasCJKLanguage: false
 
 languages:
     en:
-        languageName: English
+        label: English
         title: Chris Smith
         weight: 1
         params: {}
@@ -46,7 +46,7 @@ params:
     # look in assets/scss/
     themeVariant:
         # active SCSS variant in assets/scss/style-*.scss
-        active: winter
+        active: bright
         # per-variant background images (light/dark) used by theme switcher
         backgrounds:
             autumn:
@@ -117,11 +117,20 @@ params:
             owner:
             repo:
             clientId:
-            clientSecret:
             autoCreateIssue: false
+            js:
+            css:
+            vueJs:
+            jsIntegrity:
+            cssIntegrity:
+            vueJsIntegrity:
 
         # Waline client configuration see: https://waline.js.org/en/reference/component.html
         waline:
+            js:
+            css:
+            jsIntegrity:
+            cssIntegrity:
             serverURL:
             lang:
             pageview:

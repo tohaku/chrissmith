@@ -1,0 +1,29 @@
+{{- with .Site.Params.comments.vssue -}}
+{{- $vssueJS := default (printf "https://cdn.jsdelivr.net/npm/vssue@1.4.8/dist/vssue.%s.min.js" .platform) .js -}}
+{{- $vssueCSS := default "https://cdn.jsdelivr.net/npm/vssue@1.4.8/dist/vssue.min.css" .css -}}
+{{- $vueJS := default "https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.runtime.min.js" .vueJs -}}
+<link rel="stylesheet" href="{{ $vssueCSS }}"{{ with .cssIntegrity }} integrity="{{ . }}" crossorigin="anonymous"{{ end }} />
+
+<div id="vssue"></div>
+
+<script src="{{ $vueJS }}"{{ with .vueJsIntegrity }} integrity="{{ . }}" crossorigin="anonymous"{{ end }}></script>
+<script src="{{ $vssueJS }}"{{ with .jsIntegrity }} integrity="{{ . }}" crossorigin="anonymous"{{ end }}></script>
+
+<script>
+    new Vue({
+        el: "#vssue",
+        render: (h) =>
+            h("Vssue", {
+                props: {
+                    title: "{{ $.Title }}",
+                    options: {
+                        autoCreateIssue: {{ default false .autoCreateIssue }},
+                        owner: "{{ .owner }}",
+                        repo: "{{ .repo }}",
+                        clientId: "{{ .clientId }}",
+                    },
+                },
+            }),
+    });
+</script>
+{{- end -}}
