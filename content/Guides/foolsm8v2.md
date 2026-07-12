@@ -8,7 +8,7 @@ tags:
   - Javascript
   - Web
   - API
-draft: true
+draft: false
 description: "Hack Javascript to successfully get checkmate and receive the flag"
 ---
 
