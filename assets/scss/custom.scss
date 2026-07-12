@@ -101,6 +101,119 @@
   }
 }
 
+/* Rich cards used only by the CTF write-ups section. */
+.ctf-writeup-list {
+  display: grid;
+  gap: 20px;
+}
+
+.ctf-writeup-card {
+  overflow: hidden;
+  border: 1px solid var(--card-separator-color);
+  border-radius: var(--card-border-radius);
+  background: var(--card-background);
+  box-shadow: var(--shadow-l1);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+
+  &:hover {
+    border-color: var(--accent-color);
+    box-shadow: var(--shadow-l2);
+    transform: translateY(-2px);
+  }
+}
+
+.ctf-writeup-card__main {
+  display: grid;
+  gap: 14px;
+  padding: var(--card-padding);
+  color: inherit;
+}
+
+.ctf-writeup-card__heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+
+  h2 {
+    margin: 0;
+    color: var(--card-text-color-main);
+    font-family: var(--article-font-family);
+    font-size: 2.1rem;
+  }
+
+  span {
+    color: var(--accent-color);
+    font-size: 2.4rem;
+    line-height: 1;
+    transition: transform 0.2s ease;
+  }
+}
+
+.ctf-writeup-card:hover .ctf-writeup-card__heading span {
+  transform: translateX(4px);
+}
+
+.ctf-writeup-card__description {
+  margin: 0;
+  color: var(--card-text-color-secondary);
+  font-size: 1.55rem;
+  line-height: 1.55;
+}
+
+.ctf-writeup-card__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 22px;
+  color: var(--card-text-color-tertiary);
+  font-size: 1.35rem;
+
+  span {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+
+  svg {
+    width: 17px;
+    height: 17px;
+    stroke-width: 1.5;
+  }
+}
+
+.ctf-writeup-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 14px var(--card-padding);
+  border-top: 1px solid var(--card-separator-color);
+  background: rgba(148, 163, 184, 0.045);
+
+  a {
+    padding: 5px 10px;
+    border: 1px solid var(--card-separator-color);
+    border-radius: var(--tag-border-radius);
+    color: var(--card-text-color-secondary);
+    font-size: 1.2rem;
+    line-height: 1;
+
+    &:hover {
+      border-color: var(--accent-color);
+      color: var(--accent-color);
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .ctf-writeup-card__main {
+    padding: var(--small-card-padding);
+  }
+
+  .ctf-writeup-card__tags {
+    padding-inline: var(--small-card-padding);
+  }
+}
+
 /* Seasonal corner art (responsive, fixed to viewport corners) */
 :root {
   --seasonal-corner-image-left-src: none;

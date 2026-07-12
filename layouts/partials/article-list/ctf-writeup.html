@@ -1,0 +1,33 @@
+<article class="ctf-writeup-card">
+    <a class="ctf-writeup-card__main" href="{{ .RelPermalink }}">
+        <div class="ctf-writeup-card__heading">
+            <h2>{{ .Title }}</h2>
+            <span aria-hidden="true">→</span>
+        </div>
+
+        {{ with .Description }}
+            <p class="ctf-writeup-card__description">{{ . }}</p>
+        {{ end }}
+
+        <div class="ctf-writeup-card__meta">
+            <span>
+                {{ partial "helper/icon" "date" }}
+                <time datetime="{{ .Date.Format "2006-01-02" }}">
+                    {{ .Date | time.Format (or .Site.Params.dateFormat.published "Jan 02, 2006") }}
+                </time>
+            </span>
+            <span>
+                {{ partial "helper/icon" "clock" }}
+                {{ T "article.readingTime" .ReadingTime }}
+            </span>
+        </div>
+    </a>
+
+    {{ with .GetTerms "tags" }}
+        <footer class="ctf-writeup-card__tags" aria-label="Topics">
+            {{ range . }}
+                <a href="{{ .RelPermalink }}">{{ .LinkTitle }}</a>
+            {{ end }}
+        </footer>
+    {{ end }}
+</article>

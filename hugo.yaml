@@ -225,7 +225,7 @@ params:
 menu:
     main:
         - name: Home
-          weight: 2
+          weight: 1
           url: /
           params:
               icon: home
@@ -234,8 +234,14 @@ menu:
           url: /homelab/
           params:
               icon: server
+        - name: CTF WriteUps
+          weight: 3
+          url: /Guides/
+          params:
+              icon: ctf-writeups
 
-    # social:
+
+    social:
     #     - identifier: github
     #       name: GitHub
     #       url: https://github.com/tohaku
@@ -248,11 +254,11 @@ menu:
     #       params:
     #           icon: brand-twitter
 
-    #     - identifier: tryhackme
-    #       name: TryHackMe
-    #       url: https://tryhackme.com/p/tohaku
-    #       params:
-    #           icon: brand-thm
+        - identifier: tryhackme
+          name: TryHackMe
+          url: https://tryhackme.com/p/tohaku
+          params:
+              icon: brand-thm
 
 related:
     includeNewer: true
