@@ -1,6 +1,7 @@
 ---
 title: "Blue — EternalBlue Writeup"
 date: 2026-03-29
+difficulty: Easy
 tags:
   - tryhackme
   - ctf

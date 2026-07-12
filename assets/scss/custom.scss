@@ -142,16 +142,50 @@
     font-size: 2.1rem;
   }
 
-  span {
-    color: var(--accent-color);
-    font-size: 2.4rem;
-    line-height: 1;
-    transition: transform 0.2s ease;
-  }
+.ctf-writeup-card__arrow {
+  color: var(--accent-color);
+  font-size: 2.4rem;
+  line-height: 1;
+  transition: transform 0.2s ease;
+}
 }
 
-.ctf-writeup-card:hover .ctf-writeup-card__heading span {
+.ctf-writeup-card:hover .ctf-writeup-card__arrow {
   transform: translateX(4px);
+}
+
+.ctf-writeup-card__badges {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.ctf-difficulty {
+  padding: 5px 10px;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ctf-difficulty--easy {
+  color: #22c55e;
+  background: rgba(34, 197, 94, 0.1);
+}
+
+.ctf-difficulty--medium {
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.1);
+}
+
+.ctf-difficulty--hard,
+.ctf-difficulty--insane {
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.1);
 }
 
 .ctf-writeup-card__description {
