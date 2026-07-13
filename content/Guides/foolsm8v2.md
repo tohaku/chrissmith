@@ -58,7 +58,7 @@ Here's a good read about this type of attack [Port Swigger Prototype Pollution](
 
 ### Launch the webpage and see what happens
 
-<img src="cdn.chris-smith.net/TryHackMe/foolsm8v2/Screenshot-2026-07-11-at-3.16.25%E2%80%AFPM-7449338a.png" alt="Webpage" style="display:block; max-width:100%; height:auto;" loading="lazy" />
+<img src="https://cdn.chris-smith.net/TryHackMe/foolsm8v2/Screenshot-2026-07-11-at-3.16.25%E2%80%AFPM-7449338a.png" alt="Webpage" style="display:block; max-width:100%; height:auto;" loading="lazy" />
 
 We can immediately see two functions on the page, reset and save preferences. Also when checkmating blacks king with white's rook, we get a denial message.
 
@@ -239,11 +239,11 @@ Priority: u=0
 {"theme":"dark","pieceSet":"classic","animationMs":180,"constructor":{"prototype":{"unlocked":true}}}
 ```
 
-<img src="cdn.chris-smith.net/TryHackMe/foolsm8v2/Screenshot-2026-07-12-at-1.44.23%E2%80%AFPM-9a98bdd5.png" alt="Pollution2" style="display:block; max-width:100%; height:auto;" loading="lazy" />
+<img src="https://cdn.chris-smith.net/TryHackMe/foolsm8v2/Screenshot-2026-07-12-at-1.44.23%E2%80%AFPM-9a98bdd5.png" alt="Pollution2" style="display:block; max-width:100%; height:auto;" loading="lazy" />
 
 After sending the settings payload, we replay the checkmate move and get the flag.
 
-<img src="cdn.chris-smith.net/TryHackMe/foolsm8v2/Screenshot-2026-07-12-at-1.45.25%E2%80%AFPM-eef8d106.png" alt="Flag" style="display:block; max-width:100%; height:auto;" loading="lazy" />
+<img src="https://cdn.chris-smith.net/TryHackMe/foolsm8v2/Screenshot-2026-07-12-at-1.45.25%E2%80%AFPM-eef8d106.png" alt="Flag" style="display:block; max-width:100%; height:auto;" loading="lazy" />
 
 ---
 
