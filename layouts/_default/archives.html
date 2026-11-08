@@ -1,0 +1,11 @@
+{{ define "body-class" }}template-archives{{ end }}
+{{ define "main" }}
+{{ $posts := (where (where .Site.RegularPages "Type" "in" .Site.Params.mainSections) "Params.hidden" "!=" true).ByDate.Reverse }}
+<header class="workshop-archive-heading"><p class="workshop-eyebrow">The archive</p><h1>All posts.</h1><p>Things I’ve built, lessons I’ve learned, and stories along the way.</p></header>
+<div class="workshop-tools"><div class="workshop-filters" role="group" aria-label="Filter posts by category"><button type="button" data-filter="" aria-pressed="true">All</button>{{ range .Site.Taxonomies.categories.ByCount }}<button type="button" data-filter="{{ .Page.Title | lower }}" aria-pressed="false">{{ .Page.Title }}</button>{{ end }}</div><label class="workshop-search"><span class="sr-only">Search posts</span><input type="search" id="archive-search" placeholder="Search posts…"></label></div>
+<p class="workshop-results" aria-live="polite">{{ len $posts }} posts</p>
+{{ range $posts.GroupByDate "2006" }}<section class="workshop-year" id="{{ .Key }}"><h2>{{ .Key }}</h2><div>{{ range .Pages }}{{ partial "workshop/row.html" . }}{{ end }}</div></section>{{ end }}
+<p id="archive-empty" hidden>No posts match your search.</p>
+{{ $script := resources.Get "js/workshop-archive.js" | minify | fingerprint }}<script src="{{ $script.RelPermalink }}" defer></script>
+{{ partial "workshop/footer.html" . }}
+{{ end }}

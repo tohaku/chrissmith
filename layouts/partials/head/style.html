@@ -22,3 +22,6 @@
     <link rel="stylesheet" href="{{ $ov.RelPermalink }}">
   {{ end }}
 {{ end }}
+
+{{ $workshop := resources.Get "scss/workshop.scss" | toCSS | minify | resources.Fingerprint "sha256" }}
+<link rel="stylesheet" href="{{ $workshop.RelPermalink }}">
