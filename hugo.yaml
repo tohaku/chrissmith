@@ -45,7 +45,7 @@ params:
     # look in assets/scss/
     themeVariant:
         # active SCSS variant in assets/scss/style-*.scss
-        active: bright
+        active: workshop
         # per-variant background images (light/dark) used by theme switcher
         backgrounds:
             autumn:

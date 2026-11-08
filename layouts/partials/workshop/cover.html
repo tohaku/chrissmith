@@ -1,0 +1,15 @@
+{{ $page := .Page }}
+{{ $image := partialCached "workshop/image.html" $page $page.RelPermalink }}
+{{ if $image.exists }}
+    {{ $src := $image.permalink }}
+    {{ $srcset := "" }}
+    {{ with $image.resource }}
+        {{ $small := .Fill (printf "%dx%d webp" $.Width $.Height) }}
+        {{ $large := .Fill (printf "%dx%d webp" (mul $.Width 2) (mul $.Height 2)) }}
+        {{ $src = $small.RelPermalink }}
+        {{ $srcset = printf "%s 1x, %s 2x" $small.RelPermalink $large.RelPermalink }}
+    {{ end }}
+    <img src="{{ $src }}"{{ with $srcset }} srcset="{{ . }}"{{ end }} width="{{ .Width }}" height="{{ .Height }}" alt="" decoding="async"{{ if .Priority }} fetchpriority="high"{{ else }} loading="lazy"{{ end }}>
+{{ else if .Placeholder }}
+    {{ partial "helper/icon" "archives" }}
+{{ end }}

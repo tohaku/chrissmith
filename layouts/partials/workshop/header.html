@@ -1,6 +1,9 @@
 <header class="workshop-header">
-<a class="workshop-brand" href="{{ .Site.Home.RelPermalink }}"><span aria-hidden="true">/</span> {{ .Site.Title }}</a>
-<nav aria-label="Main navigation">
-<a href="{{ "archives/" | relURL }}" {{ if eq .Layout "archives" }}aria-current="page"{{ end }}>Writing</a>
-{{ range .Site.Menus.main }}{{ if ne .URL "/" }}<a href="{{ .URL | relURL }}">{{ .Name }}</a>{{ end }}{{ end }}
-</nav></header>
+    <a class="workshop-brand" href="{{ .Site.Home.RelPermalink }}"><span aria-hidden="true">/</span> {{ .Site.Title }}</a>
+    <nav aria-label="Main navigation">
+        <a href="{{ "archives/" | relURL }}"{{ if eq .Layout "archives" }} aria-current="page"{{ end }}>Writing</a>
+        {{ range .Site.Menus.main }}
+            {{ if ne .URL "/" }}<a href="{{ .URL | relURL }}">{{ .Name }}</a>{{ end }}
+        {{ end }}
+    </nav>
+</header>

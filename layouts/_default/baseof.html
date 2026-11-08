@@ -1,13 +1,19 @@
 <!DOCTYPE html>
 <html lang="{{ .Site.Language.Lang }}" dir="{{ default `ltr` .Language.Direction }}">
-<head>{{ partial "head/head.html" . }}{{ block "head" . }}{{ end }}</head>
-<body class="workshop {{ block `body-class` . }}{{ end }}">
-{{ partial "head/colorScheme" . }}
-<a class="skip-link" href="#main-content">Skip to content</a>
-{{ partial "workshop/header.html" . }}
-<div class="workshop-layout {{ if .IsHome }}workshop-home{{ end }}">
-<main id="main-content" class="main full-width">{{ block "main" . }}{{ end }}</main>
-{{ block "right-sidebar" . }}{{ end }}
-</div>
-{{ partial "footer/include.html" . }}
-</body></html>
+    <head>
+        {{ partial "head/head.html" . }}
+        {{ block "head" . }}{{ end }}
+    </head>
+    <body class="workshop {{ block `body-class` . }}{{ end }}">
+        {{ partial "head/colorScheme" . }}
+        <a class="skip-link" href="#main-content">Skip to content</a>
+        {{ partial "workshop/header.html" . }}
+        <div class="workshop-layout{{ if .IsHome }} workshop-home{{ end }}">
+            <main id="main-content" class="main full-width">
+                {{ block "main" . }}{{ end }}
+            </main>
+            {{ block "right-sidebar" . }}{{ end }}
+        </div>
+        {{ partial "footer/include.html" . }}
+    </body>
+</html>

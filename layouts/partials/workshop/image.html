@@ -1,0 +1,27 @@
+{{/* Resolve remote covers once per build and let Hugo cache their originals.
+     A failed download retains the original URL rather than breaking the site. */}}
+{{ $image := partial "helper/image" (dict "Context" . "Type" "articleList") }}
+{{ $resource := $image.resource }}
+{{/* A checked-in cover can repair a remote file with a mismatched MIME type.
+     Match by content filename without changing the article's original image. */}}
+{{ with .File }}
+    {{ with resources.GetMatch (printf "images/covers/%s.*" .ContentBaseName) }}
+        {{ $resource = . }}
+    {{ end }}
+{{ end }}
+{{ if and $image.exists (not $resource) }}
+    {{ $url := urls.Parse $image.permalink }}
+    {{ if and (in (slice "http" "https") $url.Scheme) (ne (lower (path.Ext $url.Path)) ".svg") }}
+        {{ $remote := try (resources.GetRemote $image.permalink (dict "timeout" "10s")) }}
+        {{ with $remote.Err }}
+            {{ warnf "Unable to optimize cover for %s: %s" $.RelPermalink . }}
+        {{ else }}
+            {{ with $remote.Value }}
+                {{ if and (eq .ResourceType "image") (ne .MediaType.SubType "svg+xml") }}
+                    {{ $resource = . }}
+                {{ end }}
+            {{ end }}
+        {{ end }}
+    {{ end }}
+{{ end }}
+{{ return (merge $image (dict "resource" $resource)) }}

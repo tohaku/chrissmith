@@ -1,0 +1,3 @@
+{{/* Share the same visibility and ordering rules across workshop pages. */}}
+{{ $posts := where .RegularPages "Type" "in" .Params.mainSections }}
+{{ return (where $posts "Params.hidden" "!=" true).ByDate.Reverse }}

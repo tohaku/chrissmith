@@ -1,0 +1,8 @@
+<div class="workshop-meta">
+    {{ if .ShowCategory }}
+        {{ with .Page.GetTerms "categories" }}
+            <span class="workshop-topic">{{ (index . 0).LinkTitle }}</span>
+        {{ end }}
+    {{ end }}
+    <time datetime="{{ .Page.Date.Format "2006-01-02" }}">{{ .Page.Date.Format .DateFormat }}</time> · {{ .Page.ReadingTime }} min{{ if .ShowRead }} read{{ end }}
+</div>

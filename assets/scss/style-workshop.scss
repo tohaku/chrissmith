@@ -1,0 +1,79 @@
+/* Retained Stack article and section styling. Sidebar and old feed effects
+   are intentionally omitted; workshop.scss owns the new shell and archive. */
+:root, :root[data-scheme="dark"] {
+  --code-font-family: "SFMono-Regular", "Cascadia Code", Menlo, Monaco, Consolas, monospace;
+  --tag-border-radius: 999px;
+  --section-separation: 34px;
+  --card-background-selected: rgba(56, 189, 248, 0.14);
+  --blockquote-background-color: rgba(14, 165, 233, 0.12);
+  --link-background-color: 14, 165, 233;
+  --link-background-opacity: 0.14;
+  --link-background-opacity-hover: 0.24;
+  --code-background-color: rgba(14, 165, 233, 0.16);
+  --code-text-color: #bae6fd;
+  --table-border-color: rgba(148, 163, 184, 0.24);
+  --tr-even-background-color: rgba(148, 163, 184, 0.08);
+}
+
+.article-list article,
+.article-list--compact,
+.article-list--tile article,
+.widget.archives .widget-archive--list,
+.section-card,
+.pagination,
+.search-form,
+.not-found-card,
+.main-article,
+.article-content .timeline img {
+  border: 1px solid rgba(148, 163, 184, 0.18);
+}
+
+.article-title {
+  font-weight: 800;
+  line-height: 1.18;
+  letter-spacing: 0;
+}
+
+.article-list article .article-title {
+  font-size: 2.45rem;
+  line-height: 1.15;
+}
+
+.article-subtitle,
+.article-preview {
+  color: var(--card-text-color-secondary);
+}
+
+.article-category a,
+.article-tags a {
+  background: linear-gradient(135deg, var(--accent-color), #22c55e);
+  color: var(--accent-color-text);
+  font-weight: 700;
+  padding: 7px 14px;
+
+  &:hover {
+    background: linear-gradient(135deg, var(--accent-color-darker), #16a34a);
+    color: var(--accent-color-text);
+  }
+}
+
+.section-title {
+  color: var(--card-text-color-main);
+  font-size: 1.55rem;
+  font-weight: 800;
+  letter-spacing: 0;
+}
+
+.article-content {
+  color: var(--card-text-color-main);
+  font-size: 1.7rem;
+
+  h1, h2, h3, h4 {
+    color: var(--card-text-color-main);
+    font-weight: 800;
+  }
+
+  a { font-weight: 650; }
+  blockquote { border-color: var(--accent-color); }
+  code { border-radius: 6px; }
+}

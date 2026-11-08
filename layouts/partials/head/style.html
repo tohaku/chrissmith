@@ -1,27 +1,17 @@
-{{/* Load base theme stylesheet first */}}
-{{ $base := resources.Get "scss/style.scss" | toCSS | minify | resources.Fingerprint "sha256" }}
-<link rel="stylesheet" href="{{ $base.RelPermalink }}">
-
-{{/* Optional seasonal override: loads after base */}}
+{{/* Keep the base, selected variant and workshop overrides in one cached asset. */}}
+{{ $styles := slice (resources.Get "scss/style.scss") }}
 {{ $variantParam := .Site.Params.themeVariant }}
 {{ $variant := "" }}
-{{ if $variantParam }}
-  {{ if reflect.IsMap $variantParam }}
-    {{ $variant = default "" (index $variantParam "active") }}
-    {{ if not $variant }}
-      {{ $variant = default "" (index $variantParam "name") }}
-    {{ end }}
-  {{ else }}
-    {{ $variant = $variantParam }}
-  {{ end }}
+{{ if reflect.IsMap $variantParam }}
+    {{ $variant = $variantParam.active | default $variantParam.name | default "" }}
+{{ else }}
+    {{ $variant = $variantParam | default "" }}
 {{ end }}
 {{ if $variant }}
-  {{ $override := resources.Get (printf "scss/style-%s.scss" $variant) }}
-  {{ if $override }}
-    {{ $ov := $override | toCSS | minify | resources.Fingerprint "sha256" }}
-    <link rel="stylesheet" href="{{ $ov.RelPermalink }}">
-  {{ end }}
+    {{ with resources.Get (printf "scss/style-%s.scss" $variant) }}
+        {{ $styles = $styles | append . }}
+    {{ end }}
 {{ end }}
-
-{{ $workshop := resources.Get "scss/workshop.scss" | toCSS | minify | resources.Fingerprint "sha256" }}
-<link rel="stylesheet" href="{{ $workshop.RelPermalink }}">
+{{ $styles = $styles | append (resources.Get "scss/workshop.scss") }}
+{{ $css := $styles | resources.Concat "scss/site.scss" | toCSS | minify | resources.Fingerprint "sha256" }}
+<link rel="stylesheet" href="{{ $css.RelPermalink }}">
