@@ -1,6 +1,7 @@
 ---
 title: "Towel on the Sunbed"
 date: 2026-08-03
+platform: TryHackMe
 difficulty: Medium
 tags:
   - ctf

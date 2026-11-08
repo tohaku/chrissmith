@@ -559,3 +559,52 @@ body.workshop {
     margin-right: 8px;
   }
 }
+
+/* CTF facets share the archive's quiet, responsive control styling. */
+.ctf-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 16px;
+  padding-bottom: 22px;
+  border-bottom: 1px solid var(--card-separator-color);
+
+  label {
+    display: grid;
+    flex: 1 1 170px;
+    min-width: 0;
+    gap: 8px;
+    color: var(--card-text-color-secondary);
+    font-size: 1.3rem;
+  }
+
+  select, button {
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1px solid var(--card-separator-color);
+    border-radius: 7px;
+    font: inherit;
+    font-size: 1.6rem;
+    color: var(--card-text-color-main);
+    background: var(--card-background);
+  }
+
+  select { width: 100%; }
+  button { cursor: pointer; }
+  button:hover { border-color: var(--accent-color); }
+  select:focus-visible {
+    outline: 2px solid var(--accent-color);
+    outline-offset: 4px;
+  }
+}
+
+.ctf-empty {
+  padding: 24px 0;
+  color: var(--card-text-color-secondary);
+  line-height: 1.6;
+}
+
+@media(max-width: 440px) {
+  .ctf-filters label { flex-basis: 100%; }
+  .ctf-writeup-card__heading { flex-wrap: wrap; }
+}

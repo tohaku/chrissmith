@@ -1,29 +1,54 @@
 {{ define "main" }}
-    <header>
-        <h3 class="section-title">{{ T "list.section" }}</h3>
+    {{/* Filter the whole collection so matches never hide on another page. */}}
+    {{ $pages := (where .RegularPagesRecursive "Params.hidden" "!=" true).ByDate.Reverse }}
+    {{ $platforms := dict }}
+    {{ $topics := dict }}
+    {{ $difficulties := slice "easy" "medium" "hard" "insane" }}
+    {{ range $pages }}
+        {{ $filters := partial "workshop/ctf-filters.html" . }}
+        {{ $platforms = merge $platforms (dict $filters.platformKey $filters.platform) }}
+        {{ $difficulties = $difficulties | append $filters.difficulty }}
+        {{ range $filters.topics }}
+            {{ $topics = merge $topics (dict (lower .) .) }}
+        {{ end }}
+    {{ end }}
 
-        <div class="section-card">
-            <div class="section-details">
-                <h3 class="section-count">{{ T "list.page" (len .Pages) }}</h3>
-                <h1 class="section-term">{{ .Title }}</h1>
-                {{ with .Params.description }}
-                    <h2 class="section-description">{{ . }}</h2>
-                {{ end }}
-            </div>
-        </div>
+    <header class="workshop-archive-heading">
+        <p class="workshop-eyebrow">Field notes</p>
+        <h1>CTF Writeups</h1>
+        <p>{{ .Params.description | default "Challenges, techniques, and walkthroughs." }}</p>
     </header>
 
-    {{ $paginator := .Paginate .RegularPages }}
-    <section class="ctf-writeup-list" aria-label="CTF write-ups">
-        {{ range $paginator.Pages }}
-            {{ partial "article-list/ctf-writeup" . }}
-        {{ end }}
+    <section id="ctf-browser" aria-label="Browse CTF writeups">
+        <form class="ctf-filters" aria-label="Filter CTF writeups" hidden>
+            <label for="ctf-difficulty">Difficulty
+                <select id="ctf-difficulty" name="difficulty">
+                    <option value="">All difficulties</option>
+                    {{ range $difficulties | uniq }}<option value="{{ . }}">{{ . | title }}</option>{{ end }}
+                </select>
+            </label>
+            <label for="ctf-platform">Platform
+                <select id="ctf-platform" name="platform">
+                    <option value="">All platforms</option>
+                    {{ range $key, $label := $platforms }}<option value="{{ $key }}">{{ $label }}</option>{{ end }}
+                </select>
+            </label>
+            <label for="ctf-topic">Topic
+                <select id="ctf-topic" name="topic">
+                    <option value="">All topics</option>
+                    {{ range $key, $label := $topics }}<option value="{{ $key }}">{{ $label }}</option>{{ end }}
+                </select>
+            </label>
+            <button type="reset">Clear filters</button>
+        </form>
+        <p class="workshop-results" aria-live="polite" aria-atomic="true">{{ len $pages }} writeups</p>
+        <section class="ctf-writeup-list" aria-label="CTF write-ups">
+            {{ range $pages }}{{ partial "article-list/ctf-writeup" . }}{{ end }}
+        </section>
+        <p class="ctf-empty" hidden>No writeups match these filters. Try another combination or clear the filters.</p>
     </section>
 
-    {{ partial "pagination.html" . }}
+    {{ $script := resources.Get "js/ctf-filters.js" | minify | fingerprint }}
+    <script src="{{ $script.RelPermalink }}" defer></script>
     {{ partialCached "footer/footer" . }}
-{{ end }}
-
-{{ define "right-sidebar" }}
-    {{ partial "sidebar/right.html" (dict "Context" . "Scope" "homepage") }}
 {{ end }}

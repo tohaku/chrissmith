@@ -1,4 +1,5 @@
-<article class="ctf-writeup-card">
+{{ $filters := partial "workshop/ctf-filters.html" . }}
+<article class="ctf-writeup-card" data-difficulty="{{ $filters.difficulty }}" data-platform="{{ $filters.platformKey }}" data-topics="{{ $filters.topicKeys | jsonify }}">
     <a class="ctf-writeup-card__main" href="{{ .RelPermalink }}">
         <div class="ctf-writeup-card__heading">
             <h2>{{ .Title }}</h2>
@@ -15,6 +16,7 @@
         {{ end }}
 
         <div class="ctf-writeup-card__meta">
+            <span>{{ $filters.platform }}</span>
             <span>
                 {{ partial "helper/icon" "date" }}
                 <time datetime="{{ .Date.Format "2006-01-02" }}">

@@ -1,0 +1,18 @@
+{{/* Explicit fields take precedence; older writeups can still use tags. */}}
+{{ $platforms := dict "tryhackme" "TryHackMe" "hackthebox" "Hack The Box" "hack the box" "Hack The Box" "htb" "Hack The Box" "picoctf" "picoCTF" }}
+{{ $platform := .Params.platform | default "" }}
+{{ $topics := slice }}
+{{ range .Params.tags }}
+    {{ $tag := lower . }}
+    {{ if isset $platforms $tag }}
+        {{ if not $platform }}{{ $platform = index $platforms $tag }}{{ end }}
+    {{ else if not (in (slice "ctf" "writeup" "writeups") $tag) }}
+        {{ $topics = $topics | append . }}
+    {{ end }}
+{{ end }}
+{{ with .Params.topics }}{{ $topics = . }}{{ end }}
+{{ $platform = $platform | default "Unspecified" }}
+{{ $platform = index $platforms (lower $platform) | default $platform }}
+{{ $topicKeys := slice }}
+{{ range $topics }}{{ $topicKeys = $topicKeys | append (lower .) }}{{ end }}
+{{ return (dict "difficulty" (lower (.Params.difficulty | default "Unspecified")) "platform" $platform "platformKey" (lower $platform) "topics" $topics "topicKeys" ($topicKeys | uniq)) }}

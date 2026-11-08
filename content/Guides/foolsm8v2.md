@@ -1,6 +1,7 @@
 ---
 title: "Fools Mate, Revenge Writeup"
 date: 2026-07-11
+platform: TryHackMe
 difficulty: Medium
 tags:
   - ctf
