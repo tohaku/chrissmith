@@ -1,3 +1,27 @@
-<article class="workshop-row" data-categories="{{ delimit .Params.categories "|" | lower }}" data-search="{{ printf "%s %s %s %s" .Title (.Params.description | default .Params.subtitle | default "") (delimit .Params.categories " ") (delimit .Params.tags " ") | lower }}">
-<a href="{{ .RelPermalink }}"><div><h3>{{ .Title }}</h3>{{ with .Params.description | default .Params.subtitle }}<p>{{ . }}</p>{{ end }}</div><div class="workshop-meta">{{ with .GetTerms "categories" }}<span class="workshop-topic">{{ (index . 0).LinkTitle }}</span>{{ end }}<time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 02" }}</time> · {{ .ReadingTime }} min</div></a>
+{{ $showImage := .ShowImage }}
+{{ with .Page }}
+<article class="workshop-row{{ if $showImage }} workshop-row--thumbnail{{ end }}" data-categories="{{ delimit .Params.categories "|" | lower }}" data-search="{{ printf "%s %s %s %s" .Title (.Params.description | default .Params.subtitle | default "") (delimit .Params.categories " ") (delimit .Params.tags " ") | lower }}">
+<a href="{{ .RelPermalink }}">
+{{ if $showImage }}
+    {{ $image := partial "helper/image" (dict "Context" . "Type" "articleList") }}
+    <span class="workshop-thumbnail" aria-hidden="true">
+    {{ if $image.exists }}
+        {{ $src := $image.permalink }}
+        {{ $srcset := "" }}
+        {{ with $image.resource }}
+            {{ $small := .Fill "96x64" }}
+            {{ $retina := .Fill "192x128" }}
+            {{ $src = $small.RelPermalink }}
+            {{ $srcset = printf "%s 1x, %s 2x" $small.RelPermalink $retina.RelPermalink }}
+        {{ end }}
+        <img src="{{ $src }}"{{ with $srcset }} srcset="{{ . }}"{{ end }} width="96" height="64" loading="lazy" decoding="async" alt="">
+    {{ else }}
+        {{ partial "helper/icon" "archives" }}
+    {{ end }}
+    </span>
+{{ end }}
+<div class="workshop-row-text"><h3>{{ .Title }}</h3>{{ with .Params.description | default .Params.subtitle }}<p>{{ . }}</p>{{ end }}</div>
+<div class="workshop-meta">{{ with .GetTerms "categories" }}<span class="workshop-topic">{{ (index . 0).LinkTitle }}</span>{{ end }}<time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 02" }}</time> · {{ .ReadingTime }} min</div>
+</a>
 </article>
+{{ end }}

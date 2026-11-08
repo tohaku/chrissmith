@@ -3,5 +3,4 @@
 <nav aria-label="Main navigation">
 <a href="{{ "archives/" | relURL }}" {{ if eq .Layout "archives" }}aria-current="page"{{ end }}>Writing</a>
 {{ range .Site.Menus.main }}{{ if ne .URL "/" }}<a href="{{ .URL | relURL }}">{{ .Name }}</a>{{ end }}{{ end }}
-<div class="workshop-social">{{ partial "workshop/social.html" . }}</div>
 </nav></header>
