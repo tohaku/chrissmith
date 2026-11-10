@@ -138,9 +138,7 @@ body.workshop {
   letter-spacing: -1.8px;
   margin: 14px 0 18px;
   font-weight: 700;
-  span {
-    color: var(--accent-color);
-  }
+  color: var(--card-text-color-main);
 }
 
 .workshop-intro {
